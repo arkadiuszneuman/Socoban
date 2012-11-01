@@ -6,7 +6,7 @@ BaseObject::BaseObject(Point &p)
 	this->engine = Engine::GetInstance();
 }
 
-void BaseObject::DrawBitmap(ALLEGRO_BITMAP *bitmap)
+void BaseObject::Draw()
 {
 	engine->DrawBitmap(bitmap, location.GetX(), location.GetY());
 }

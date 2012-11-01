@@ -1,7 +1,5 @@
 #include "Player.h"
 
-ALLEGRO_BITMAP *Player::bitmap = NULL;
-
 Player::Player(Point &location)
 	: MovableObject(location)
 {
@@ -18,11 +16,6 @@ Player::Player(Point &location)
 
 	pressedKey = Key::None;
 	framesCount = 0;
-}
-
-void Player::Draw()
-{
-	DrawBitmap(bitmap);
 }
 
 void Player::Update()
