@@ -5,17 +5,25 @@ Player::Player(Point &location)
 {
 	if (animMove.empty())
 	{
-		std::vector<ALLEGRO_BITMAP*> vector;
-		vector.push_back(engine->LoadBMP("player/move/right1.bmp"));
-		vector.push_back(engine->LoadBMP("player/move/right2.bmp"));
-		vector.push_back(engine->LoadBMP("player/move/right3.bmp"));
-
-		animMove[(int)Key::Right] = vector;
-		bitmap = vector[0];
+		LoadBitmaps("right", Key::Right);
+		LoadBitmaps("left", Key::Left);
+		LoadBitmaps("up", Key::Up);
+		LoadBitmaps("down", Key::Down);
+		
+		bitmap = animMove[(int)Key::Down][0];;
 	}
 
 	pressedKey = Key::None;
 	framesCount = 0;
+}
+
+void Player::LoadBitmaps(std::string bitmapName, Key key)
+{
+	std::vector<ALLEGRO_BITMAP*> vector;
+	vector.push_back(engine->LoadBMP("player/move/" + bitmapName + "1.bmp"));
+	vector.push_back(engine->LoadBMP("player/move/" + bitmapName + "2.bmp"));
+	vector.push_back(engine->LoadBMP("player/move/" + bitmapName + "3.bmp"));
+	animMove[(int)key] = vector;
 }
 
 void Player::Update()
@@ -55,11 +63,14 @@ void Player::Update()
 	MovableObject::Update();
 }
 
+
+
 void Player::KeyPressed(Key key)
 {
 	if (pressedKey == Key::None)
 	{
 		pressedKey = key;
+		moveDirection = key;
 	}
 }
 
@@ -73,6 +84,5 @@ void Player::KeyReleased(Key key)
 
 Player::~Player()
 {
-	al_destroy_bitmap(bitmap);
 	animMove.clear();
 }
