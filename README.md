@@ -1,4 +1,0 @@
-Socoban
-=======
-
-Socoban University progect
