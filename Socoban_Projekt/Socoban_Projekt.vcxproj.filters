@@ -54,6 +54,9 @@
     <ClCompile Include="MovableObject.cpp">
       <Filter>Objects\Base</Filter>
     </ClCompile>
+    <ClCompile Include="Floor.cpp">
+      <Filter>Objects\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="MovableObject.h">
       <Filter>Objects\Base\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Floor.h">
+      <Filter>Objects\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
