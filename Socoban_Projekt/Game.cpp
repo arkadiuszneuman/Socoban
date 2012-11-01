@@ -1,13 +1,22 @@
 #include "Game.h"
 #include "Player.h"
+#include "Floor.h"
+#include "Box.h"
 
-Player *player;
+std::vector<BaseObject> staticObjects;
+std::vector<MovableObject> movableObjects;
+std::vector<Player> players;
 
 void Game::Start()
 {
 	Engine::GetInstance()->Initialize(this, "Socoban");
 
-	player = new Player(Point(20, 30));
+	staticObjects.push_back(Floor(Point(0, 0)));
+	staticObjects.push_back(Floor(Point(0, 30)));
+	movableObjects.push_back(Box(Point(30, 60)));
+	movableObjects.push_back(Box(Point(30, 90)));
+	movableObjects.push_back(Box(Point(30, 120)));
+	players.push_back(Player(Point(30, 30)));
 
 	Engine::GetInstance()->StartGameLoop();
 
@@ -16,20 +25,47 @@ void Game::Start()
 
 void Game::Draw()
 {
-	player->Draw();
+	for (int i = 0; i < staticObjects.size(); ++i)
+	{
+		staticObjects[i].Draw();
+	}
+
+	for (int i = 0; i < movableObjects.size(); ++i)
+	{
+		movableObjects[i].Draw();
+	}
+
+	for (int i = 0; i < players.size(); ++i)
+	{
+		players[i].Draw();
+	}
 }
 
 void Game::Update()
 {
-	player->Update();
+	for (int i = 0; i < movableObjects.size(); ++i)
+	{
+		movableObjects[i].Update();
+	}
+
+	for (int i = 0; i < players.size(); ++i)
+	{
+		players[i].Update();
+	}
 }
 
 void Game::KeyDownEvent(Key key)
 {
-	player->KeyPressed(key);
+	for (int i = 0; i < players.size(); ++i)
+	{
+		players[i].KeyPressed(key);
+	}
 }
 
 void Game::KeyUpEvent(Key key)
 {
-	player->KeyReleased(key);
+	for (int i = 0; i < players.size(); ++i)
+	{
+		players[i].KeyReleased(key);
+	}
 }
