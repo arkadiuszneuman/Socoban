@@ -1,8 +1,10 @@
 #include "Player.h"
 
-Player::Player(Point &location)
+Player::Player(Point &location, std::vector<Box*> boxes)
 	: MovableObject(location)
 {
+	this->boxes = boxes;
+
 	if (animMove.empty())
 	{
 		LoadBitmaps("right", Key::Right);
@@ -35,28 +37,12 @@ void Player::Update()
 		if (pressedKey == Key::Down || pressedKey == Key::Left
 			|| pressedKey == Key::Right || pressedKey == Key::Up)
 		{
-			int x = location.GetX(); 
-			int y = location.GetY();
-
-			switch (pressedKey)
-			{
-			case Key::Down:
-				y += texSize;
-				break;
-			case Key::Up:
-				y -= texSize;
-				break;
-			case Key::Left:
-				x -= texSize;
-				break;
-			case Key::Right:
-				x += texSize;
-				break;
-			}
-
-			Move(Point(x, y));
-			framesCount = 0;
 			moveDirection = pressedKey;
+			Point playerDestination = GetPointMoveDirection(this->location, pressedKey);
+
+			MoveBoxes(playerDestination);
+			Move(playerDestination);
+			framesCount = 0;
 		}
 		else
 		{
@@ -69,6 +55,42 @@ void Player::Update()
 	}
 
 	MovableObject::Update();
+}
+
+Point Player::GetPointMoveDirection(Point point, Key key)
+{
+	int x = point.GetX(); 
+	int y = point.GetY();
+
+	switch (key)
+	{
+	case Key::Down:
+		y += texSize;
+		break;
+	case Key::Up:
+		y -= texSize;
+		break;
+	case Key::Left:
+		x -= texSize;
+		break;
+	case Key::Right:
+		x += texSize;
+		break;
+	}
+
+	return Point(x, y);
+}
+
+void Player::MoveBoxes(Point playerDestination)
+{
+	for (int i = 0; i < boxes.size(); ++i)
+	{
+		if (boxes[i]->GetLocation() == playerDestination)
+		{
+			//przesuwa s¹siaduj¹c¹ skrzynkê w zale¿noœci od ruchu gracza
+			boxes[i]->Move(GetPointMoveDirection(boxes[i]->GetLocation(), moveDirection));
+		}
+	}
 }
 
 void Player::Anim()

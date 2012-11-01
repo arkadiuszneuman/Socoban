@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{e8471d91-9da0-4b3f-89b5-89c185baf995}</UniqueIdentifier>
     </Filter>
@@ -30,6 +26,12 @@
     </Filter>
     <Filter Include="Objects\Headers">
       <UniqueIdentifier>{df011294-a253-4ef5-8ff4-c1895a627f56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{e62cec6c-0c7b-43d9-94b3-d101ade7170a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map\Headers">
+      <UniqueIdentifier>{2c3a64a9-2ff9-4442-baa2-5ec56dbc7d31}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +61,9 @@
     </ClCompile>
     <ClCompile Include="Box.cpp">
       <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +96,9 @@
     </ClInclude>
     <ClInclude Include="Box.h">
       <Filter>Objects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Map\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

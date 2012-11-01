@@ -16,6 +16,7 @@ protected:
 	Point location;
 public:
 	BaseObject(Point &p);
+	Point GetLocation();
 	virtual void Draw();
 };
 
