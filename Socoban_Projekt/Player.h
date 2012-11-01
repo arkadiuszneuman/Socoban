@@ -17,12 +17,12 @@ private:
 	int framesCount;
 	std::map<const int, std::vector<ALLEGRO_BITMAP*> > animMove;
 	void LoadBitmaps(std::string bitmapName, Key key);
+	void Anim();
 public:
 	Player(Point &location);
 	void Update();
 	void KeyPressed(Key key);
 	void KeyReleased(Key key);
-	//void Anim
 	~Player();
 };
 
