@@ -57,6 +57,9 @@
     <ClCompile Include="Floor.cpp">
       <Filter>Objects\Base</Filter>
     </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -84,6 +87,9 @@
       <Filter>Objects\Base\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Floor.h">
+      <Filter>Objects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
       <Filter>Objects\Headers</Filter>
     </ClInclude>
   </ItemGroup>

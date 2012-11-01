@@ -12,7 +12,7 @@ void Game::Start()
 	Engine::GetInstance()->StartGameLoop();
 
 	Engine::GetInstance()->Exit();
-}//diagramy przypadków uzycia z laborek z aipsi
+}
 
 void Game::Draw()
 {

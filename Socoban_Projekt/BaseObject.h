@@ -13,9 +13,9 @@ protected:
 	///<summary>Rozmiar tekstury (jednego kwadratu)</summary>
 	static const int texSize = 30;
 	ALLEGRO_BITMAP *bitmap;
+	Point location;
 public:
 	BaseObject(Point &p);
-	Point location;
 	virtual void Draw();
 };
 
