@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(Point &location, std::vector<Box*> boxes)
+Player::Player(Point &location, std::vector<Box*> &boxes)
 	: MovableObject(location)
 {
 	this->boxes = boxes;
@@ -40,8 +40,15 @@ void Player::Update()
 			moveDirection = pressedKey;
 			Point playerDestination = GetPointMoveDirection(this->location, pressedKey);
 
-			MoveBoxes(playerDestination);
-			Move(playerDestination);
+			if (MoveBoxes(playerDestination))
+			{
+				Move(playerDestination);
+			}
+			else
+			{
+				bitmap = animMove[(int)moveDirection][0];
+			}
+
 			framesCount = 0;
 		}
 		else
@@ -81,16 +88,27 @@ Point Player::GetPointMoveDirection(Point point, Key key)
 	return Point(x, y);
 }
 
-void Player::MoveBoxes(Point playerDestination)
+bool Player::MoveBoxes(Point playerDestination)
 {
 	for (int i = 0; i < boxes.size(); ++i)
 	{
 		if (boxes[i]->GetLocation() == playerDestination)
 		{
+			for (int x = 0; x < boxes.size(); ++x)
+			{
+				if (boxes[x]->GetLocation() == GetPointMoveDirection(playerDestination, moveDirection))
+				{
+					return false;
+				}
+			}
 			//przesuwa s¹siaduj¹c¹ skrzynkê w zale¿noœci od ruchu gracza
 			boxes[i]->Move(GetPointMoveDirection(boxes[i]->GetLocation(), moveDirection));
+
+			return true;
 		}
 	}
+
+	return true;
 }
 
 void Player::Anim()
