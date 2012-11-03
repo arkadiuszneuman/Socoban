@@ -11,7 +11,7 @@ IGame *Engine::game = NULL;
 
 Engine::Engine()
 {
-	
+	endGameLoop = false;
 }
 
 void Engine::Initialize(IGame *game, std::string gameName)
@@ -113,7 +113,7 @@ void Engine::StartGameLoop()
 	bool redraw = false;
 	al_start_timer(timer);
  
-	while(1)
+	while(!endGameLoop)
 	{
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(eventQueue, &ev);

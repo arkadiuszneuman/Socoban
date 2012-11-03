@@ -8,7 +8,10 @@ BaseObject::BaseObject(Point &p)
 
 void BaseObject::Draw()
 {
-	engine->DrawBitmap(bitmap, location.GetX(), location.GetY());
+	if (bitmap != 0)
+	{
+		engine->DrawBitmap(bitmap, location.GetX(), location.GetY());
+	}
 }
 
 Point BaseObject::GetLocation()

@@ -28,6 +28,7 @@ public:
 	void DisposeBitmaps();
 	ALLEGRO_BITMAP *GetBMP(std::string path);
 	static Engine *GetInstance();
+	bool endGameLoop;
 	void Exit();
 };
 

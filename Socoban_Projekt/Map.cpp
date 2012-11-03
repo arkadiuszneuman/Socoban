@@ -53,12 +53,14 @@ void Map::DrawObjects()
 	}
 }
 
-void Map::UpdateObjects()
+bool Map::UpdateObjects()
 {
 	for (int i = 0; i < movableObjects.size(); ++i)
 	{
 		movableObjects[i]->Update();
 	}
+
+	return player->IsEnded();
 }
 
 void Map::KeyPressed(Key key)

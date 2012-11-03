@@ -18,7 +18,7 @@ public:
 	Map(std::string mapName);
 	~Map();
 	void DrawObjects();
-	void UpdateObjects();
+	bool UpdateObjects();
 	void KeyPressed(Key key);
 	void KeyReleased(Key key);
 };

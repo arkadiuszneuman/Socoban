@@ -19,17 +19,21 @@ private:
 	Key moveDirection;
 	int framesCount;
 	std::map<const int, std::vector<ALLEGRO_BITMAP*> > animMove;
+	std::vector<ALLEGRO_BITMAP*> animEnd;
 	///<summary>Wszystkie skrzynki, którymi porusza gracz</summary>
 	std::vector<Box*> boxes;
 	std::vector<Wall*> walls;
 	std::vector<Floor*> endPoints;
 
 	void LoadBitmaps(std::string bitmapName, Key key);
+	void LoadEndBitmaps();
 	void Anim();
+	void EndAnim();
 	bool CheckBoxes(Point playerDestination);
 	bool CheckWalls(Point destination);
 	bool CheckEnd();
 	bool animEnded;
+	bool showEndAnim;
 	bool isEnded;
 	///<summary>Zwraca s¹siaduj¹c¹ lokacjê na podstawie klawisza (lokacja 0,0 + Key::Right = lokacja 0,30)</summary>
 	Point GetPointMoveDirection(Point point, Key key);
@@ -38,6 +42,7 @@ public:
 	void Update();
 	void KeyPressed(Key key);
 	void KeyReleased(Key key);
+	bool IsEnded();
 	~Player();
 };
 

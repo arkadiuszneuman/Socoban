@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <sstream>
 
 Player::Player(Point &location, std::vector<Box*> &boxes, std::vector<Wall*> &walls, std::vector<Floor*> &endPoints)
 	: MovableObject(location)
@@ -8,6 +9,7 @@ Player::Player(Point &location, std::vector<Box*> &boxes, std::vector<Wall*> &wa
 	this->endPoints = endPoints;
 	this->animEnded = false;
 	this->isEnded = false;
+	this->showEndAnim = false;
 
 	if (animMove.empty())
 	{
@@ -15,6 +17,7 @@ Player::Player(Point &location, std::vector<Box*> &boxes, std::vector<Wall*> &wa
 		LoadBitmaps("left", Key::Left);
 		LoadBitmaps("up", Key::Up);
 		LoadBitmaps("down", Key::Down);
+		LoadEndBitmaps();
 		
 		bitmap = animMove[(int)Key::Down][0];
 		moveDirection = Key::Down;
@@ -34,24 +37,37 @@ void Player::LoadBitmaps(std::string bitmapName, Key key)
 	animMove[(int)key] = vector;
 }
 
+void Player::LoadEndBitmaps()
+{
+	for (int i = 0; i < 9; ++i)
+	{
+		std::stringstream out;
+		out << i+1;
+
+		std::string path = "player/end/" + out.str() + ".bmp";
+		animEnd.push_back(engine->GetBMP(path));
+	}
+}
+
 void Player::Update()
 {
-	if (!isMoving)
+	if (!showEndAnim && !isEnded)
 	{
-		if (animEnded)
+		if (!isMoving)
 		{
-			if (CheckEnd())
+			if (animEnded)
 			{
-				isEnded = true;
+				if (CheckEnd())
+				{
+					showEndAnim = true;
+					framesCount = 0;
+				}
+
+				animEnded = false;
 			}
 
-			animEnded = false;
-		}
-
-		if (!isEnded)
-		{
-			if (pressedKey == Key::Down || pressedKey == Key::Left
-				|| pressedKey == Key::Right || pressedKey == Key::Up)
+			if ((pressedKey == Key::Down || pressedKey == Key::Left
+				|| pressedKey == Key::Right || pressedKey == Key::Up) && !showEndAnim)
 			{
 				moveDirection = pressedKey;
 				Point playerDestination = GetPointMoveDirection(this->location, pressedKey);
@@ -72,17 +88,21 @@ void Player::Update()
 				bitmap = animMove[(int)moveDirection][0];
 			}
 		}
-	}
-	else
-	{
-		Anim();
-		if (framesCount == animFrames - 1)
+		else
 		{
-			animEnded = true;
+			Anim();
+			if (framesCount == animFrames - 1)
+			{
+				animEnded = true;
+			}
 		}
-	}
 	
-	MovableObject::Update();
+		MovableObject::Update();
+	}
+	else if (!isEnded)
+	{
+		EndAnim();
+	}
 }
 
 Point Player::GetPointMoveDirection(Point point, Key key)
@@ -180,6 +200,28 @@ void Player::Anim()
 	}
 }
 
+void Player::EndAnim()
+{
+	int frameToShow = framesCount / 5;
+
+	if (frameToShow == animEnd.size())
+	{
+		bitmap = 0;
+		isEnded = true;
+	}
+	else
+	{
+		bitmap = animEnd[frameToShow];
+	}
+
+	++framesCount;
+}
+
+bool Player::IsEnded()
+{
+	return this->isEnded;
+}
+
 void Player::KeyPressed(Key key)
 {
 	if (pressedKey == Key::None)
@@ -199,4 +241,5 @@ void Player::KeyReleased(Key key)
 Player::~Player()
 {
 	animMove.clear();
+	animEnd.clear();
 }

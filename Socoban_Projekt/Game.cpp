@@ -20,7 +20,10 @@ void Game::Draw()
 
 void Game::Update()
 {
-	map->UpdateObjects();
+	if (map->UpdateObjects())
+	{
+		Engine::GetInstance()->endGameLoop = true;
+	}
 }
 
 void Game::KeyDownEvent(Key key)
