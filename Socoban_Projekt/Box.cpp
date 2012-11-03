@@ -3,5 +3,5 @@
 Box::Box(Point &location)
 	: MovableObject(location)
 {
-	bitmap = engine->LoadBMP("box.bmp");
+	bitmap = engine->GetBMP("box.bmp");
 }

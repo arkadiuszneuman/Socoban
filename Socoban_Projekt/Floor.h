@@ -6,8 +6,10 @@
 
 class Floor : public BaseObject
 {
+private:
+	bool endPoint;
 public:
-	Floor(Point &location);
+	Floor(Point &location, bool endPoint);
 };
 
 #endif

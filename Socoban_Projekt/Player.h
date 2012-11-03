@@ -6,6 +6,8 @@
 #include "allegro5\allegro5.h"
 #include "Key.h"
 #include "Box.h"
+#include "Wall.h"
+#include "Floor.h"
 #include <map>
 #include <vector>
 
@@ -19,13 +21,20 @@ private:
 	std::map<const int, std::vector<ALLEGRO_BITMAP*> > animMove;
 	///<summary>Wszystkie skrzynki, którymi porusza gracz</summary>
 	std::vector<Box*> boxes;
+	std::vector<Wall*> walls;
+	std::vector<Floor*> endPoints;
+
 	void LoadBitmaps(std::string bitmapName, Key key);
 	void Anim();
-	bool MoveBoxes(Point playerDestination);
+	bool CheckBoxes(Point playerDestination);
+	bool CheckWalls(Point destination);
+	bool CheckEnd();
+	bool animEnded;
+	bool isEnded;
 	///<summary>Zwraca s¹siaduj¹c¹ lokacjê na podstawie klawisza (lokacja 0,0 + Key::Right = lokacja 0,30)</summary>
 	Point GetPointMoveDirection(Point point, Key key);
 public:
-	Player(Point &location, std::vector<Box*> &boxes);
+	Player(Point &location, std::vector<Box*> &boxes, std::vector<Wall*> &walls, std::vector<Floor*> &endPoints);
 	void Update();
 	void KeyPressed(Key key);
 	void KeyReleased(Key key);

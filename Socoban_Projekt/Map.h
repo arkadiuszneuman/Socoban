@@ -12,6 +12,7 @@ class Map
 private:
 	std::vector<BaseObject*> objects;
 	std::vector<MovableObject*> movableObjects;
+
 	Player *player;
 public:
 	Map(std::string mapName);

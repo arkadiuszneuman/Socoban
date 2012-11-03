@@ -26,7 +26,7 @@ public:
 	void StartGameLoop();
 	///<summary>Usuwa wszelkie bitmapy z pamiêci</summary>
 	void DisposeBitmaps();
-	ALLEGRO_BITMAP *LoadBMP(std::string path);
+	ALLEGRO_BITMAP *GetBMP(std::string path);
 	static Engine *GetInstance();
 	void Exit();
 };

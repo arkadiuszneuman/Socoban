@@ -79,7 +79,7 @@ void Engine::DrawBitmap(ALLEGRO_BITMAP *bitmap, int x, int y)
 	al_draw_bitmap(bitmap, x, y, 0);
 }
 
-ALLEGRO_BITMAP *Engine::LoadBMP(std::string filePath)
+ALLEGRO_BITMAP *Engine::GetBMP(std::string filePath)
 {
 	if (bitmapsPointiers.count(filePath))
 	{
