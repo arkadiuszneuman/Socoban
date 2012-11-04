@@ -22,10 +22,6 @@ void Map::LoadMap(std::string mapName)
 			map[i][z] = 0;
 		}
 	}
-	
-	FILE *file2 = fopen("asas.txt", "w");
-	fputs ("fopen example",file2);
-	fclose(file2);
 
 	//wczytanie mapy
 	std::string path;
