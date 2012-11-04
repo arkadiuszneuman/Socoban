@@ -59,3 +59,13 @@ bool Point::operator!= (const Point& point) const
 {
 	  return this->x != point.x || this->y != point.y;
 }
+
+bool Point::operator>= (const Point& point) const
+{
+	  return this->x >= point.x && this->y >= point.y;
+}
+
+bool Point::operator<= (const Point& point) const
+{
+	  return this->x <= point.x && this->y <= point.y;
+}

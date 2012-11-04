@@ -15,6 +15,9 @@ public:
 	void Update();
 	void KeyDownEvent(Key key);
 	void KeyUpEvent(Key key);
+	void MouseMove(Mouse mouse);
+	void MouseButtonDown(Mouse mouse);
+	void MouseButtonUp(Mouse mouse);
 };
 
 #endif

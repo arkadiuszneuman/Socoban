@@ -118,6 +118,8 @@ ALLEGRO_BITMAP *Engine::GetBMP(std::string filePath)
 
 void Engine::StartGameLoop()
 {
+	Mouse mouse;
+
 	bool redraw = false;
 	al_start_timer(timer);
  
@@ -149,7 +151,6 @@ void Engine::StartGameLoop()
 		else if (ev.type == ALLEGRO_EVENT_MOUSE_AXES ||
 			  ev.type == ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY)
 		{
-			Mouse mouse;
 			mouse.x = ev.mouse.x;
 			mouse.y = ev.mouse.y;
 			mouse.button = ev.mouse.button;
@@ -158,7 +159,6 @@ void Engine::StartGameLoop()
 		}
 		else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
 		{
-			Mouse mouse;
 			mouse.x = ev.mouse.x;
 			mouse.y = ev.mouse.y;
 			mouse.button = ev.mouse.button;
@@ -167,7 +167,6 @@ void Engine::StartGameLoop()
 		}
 		else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
 		{
-			Mouse mouse;
 			mouse.x = ev.mouse.x;
 			mouse.y = ev.mouse.y;
 			mouse.button = ev.mouse.button;
