@@ -2,6 +2,7 @@
 #define IGAME_H
 
 #include "Key.h"
+#include "Mouse.h"
 
 class IGame
 {
@@ -10,6 +11,9 @@ public:
 	virtual void Draw() = 0;
 	virtual void KeyDownEvent(Key key) = 0;
 	virtual void KeyUpEvent(Key key) = 0;
+	virtual void MouseMove(Mouse mouse) = 0;
+	virtual void MouseButtonDown(Mouse mouse) = 0;
+	virtual void MouseButtonUp(Mouse mouse) = 0;
 };
 
 #endif

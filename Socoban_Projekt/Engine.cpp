@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "allegro5/allegro_native_dialog.h"
 #include "allegro5/allegro_image.h"
+#include "Mouse.h"
 
 Engine *Engine::eng = NULL;
 bool Engine::allegroInitialized = false;
@@ -31,6 +32,12 @@ void Engine::Initialize(IGame *game, std::string gameName)
 			ShowError("Blad podczas inicjalizacji klawiatury.");
 			return;
 		}
+
+		if(!al_install_mouse()) 
+		{
+			ShowError("Blad podczas inicjalizacji myszy.");
+			return;
+		}
  
 		display = al_create_display(800, 600);
 		if (!display) 
@@ -58,6 +65,7 @@ void Engine::Initialize(IGame *game, std::string gameName)
 		al_register_event_source(eventQueue, al_get_display_event_source(display));
 		al_register_event_source(eventQueue, al_get_timer_event_source(timer));
 		al_register_event_source(eventQueue, al_get_keyboard_event_source());
+		al_register_event_source(eventQueue, al_get_mouse_event_source());
 
 		al_init_image_addon();
 
@@ -97,7 +105,7 @@ ALLEGRO_BITMAP *Engine::GetBMP(std::string filePath)
 
 		if (bmp == NULL)
 		{
-			ShowError("B³¹d wczytania bitmapy: " + filePath);
+			ShowError("Blad wczytania bitmapy: " + filePath);
 		}
 	
 		al_destroy_path(path);
@@ -118,25 +126,53 @@ void Engine::StartGameLoop()
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(eventQueue, &ev);
  
-		if(ev.type == ALLEGRO_EVENT_TIMER)
+		if (ev.type == ALLEGRO_EVENT_TIMER)
 		{
 			game->Update();
 
 			redraw = true;
 		}
-		else if(ev.type == ALLEGRO_EVENT_KEY_DOWN) 
+		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) 
 		{
 			Key key = (Key)ev.keyboard.keycode;
 			game->KeyDownEvent(key);
 		}
-		else if(ev.type == ALLEGRO_EVENT_KEY_UP) 
+		else if (ev.type == ALLEGRO_EVENT_KEY_UP) 
 		{
 			Key key = (Key)ev.keyboard.keycode;
 			game->KeyUpEvent(key);
 		}
-		else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
 			break;
+		}
+		else if (ev.type == ALLEGRO_EVENT_MOUSE_AXES ||
+			  ev.type == ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY)
+		{
+			Mouse mouse;
+			mouse.x = ev.mouse.x;
+			mouse.y = ev.mouse.y;
+			mouse.button = ev.mouse.button;
+
+			game->MouseMove(mouse);
+		}
+		else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
+		{
+			Mouse mouse;
+			mouse.x = ev.mouse.x;
+			mouse.y = ev.mouse.y;
+			mouse.button = ev.mouse.button;
+
+			game->MouseButtonUp(mouse);
+		}
+		else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+		{
+			Mouse mouse;
+			mouse.x = ev.mouse.x;
+			mouse.y = ev.mouse.y;
+			mouse.button = ev.mouse.button;
+
+			game->MouseButtonDown(mouse);
 		}
  
 		if(redraw && al_is_event_queue_empty(eventQueue))
