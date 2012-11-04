@@ -8,19 +8,17 @@ bool Engine::allegroInitialized = false;
 ALLEGRO_DISPLAY *Engine::display = NULL;
 ALLEGRO_EVENT_QUEUE *Engine::eventQueue = NULL;
 ALLEGRO_TIMER *Engine::timer = NULL;
-IGame *Engine::game = NULL;
 
 Engine::Engine()
 {
 	endGameLoop = false;
+	game = NULL;
 }
 
-void Engine::Initialize(IGame *game, std::string gameName)
+void Engine::Initialize(std::string gameName)
 {
 	if (!allegroInitialized)
 	{
-		this->game = game;
-
 		if (!al_init())
 		{
 			ShowError("Blad podczas inicjalizacji allegro.");
@@ -71,6 +69,12 @@ void Engine::Initialize(IGame *game, std::string gameName)
 
 		allegroInitialized = true;
 	}
+}
+
+void Engine::AddEvents(IGame *game, IMouseEvents *mouseEvents)
+{
+	this->game = game;
+	this->mouseEvents = mouseEvents;
 }
 
 void Engine::ShowError(std::string message)
@@ -155,7 +159,7 @@ void Engine::StartGameLoop()
 			mouse.y = ev.mouse.y;
 			mouse.button = ev.mouse.button;
 
-			game->MouseMove(mouse);
+			mouseEvents->MouseMove(mouse);
 		}
 		else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
 		{
@@ -163,7 +167,7 @@ void Engine::StartGameLoop()
 			mouse.y = ev.mouse.y;
 			mouse.button = ev.mouse.button;
 
-			game->MouseButtonUp(mouse);
+			mouseEvents->MouseButtonUp(mouse);
 		}
 		else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
 		{
@@ -171,7 +175,7 @@ void Engine::StartGameLoop()
 			mouse.y = ev.mouse.y;
 			mouse.button = ev.mouse.button;
 
-			game->MouseButtonDown(mouse);
+			mouseEvents->MouseButtonDown(mouse);
 		}
  
 		if(redraw && al_is_event_queue_empty(eventQueue))

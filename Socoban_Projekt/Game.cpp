@@ -1,19 +1,19 @@
 #include "Game.h"
-#include "Button.h"
-Button *b;
 
 void Game::Start()
 {
-	Engine::GetInstance()->Initialize(this, "Socoban");
+	Engine::GetInstance()->Initialize("Socoban");
 
+	menu = new Menu();
 	map = new Map();
 	map->LoadMap("lvl1");
 
-	b = new Button("End", Point(0, 0));
+	Engine::GetInstance()->AddEvents(this, menu);
 
 	Engine::GetInstance()->StartGameLoop();
 
-	delete(map);
+	delete map;
+	delete menu;
 
 	Engine::GetInstance()->Exit();
 }
@@ -21,7 +21,7 @@ void Game::Start()
 void Game::Draw()
 {
 	map->DrawObjects();
-	b->Draw();
+	menu->Draw();
 }
 
 void Game::Update()
@@ -40,19 +40,4 @@ void Game::KeyDownEvent(Key key)
 void Game::KeyUpEvent(Key key)
 {
 	map->KeyReleased(key);
-}
-
-void Game::MouseMove(Mouse mouse)
-{
-	b->MouseMove(mouse);
-}
-
-void Game::MouseButtonDown(Mouse mouse)
-{
-	b->MouseDown(mouse);
-}
-
-void Game::MouseButtonUp(Mouse mouse)
-{
-	b->MouseUp(mouse);
 }

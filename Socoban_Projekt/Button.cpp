@@ -1,7 +1,8 @@
 #include "Button.h"
+#include "BaseObject.h"
 #include <sstream>
 
-Button::Button(std::string name, Point &location)
+Button::Button(std::string name, Point &location, IButtonClickedEvent *buttonClickedEvent)
 	: BaseObject(location)
 {
 	for (int i = 0; i < 3; ++i)
@@ -16,6 +17,9 @@ Button::Button(std::string name, Point &location)
 	}
 
 	bitmap = bitmaps[0];
+	this->isMouseDown = false;
+	this->name = name;
+	this->buttonClickedEvent = buttonClickedEvent;
 }
 
 bool Button::IsMouseOver(Mouse mouse)
@@ -33,9 +37,25 @@ bool Button::IsMouseOver(Mouse mouse)
 
 void Button::MouseMove(Mouse mouse)
 {
+	if (!isMouseDown)
+	{
+		if (IsMouseOver(mouse))
+		{
+			bitmap = bitmaps[1];
+		}
+		else
+		{
+			bitmap = bitmaps[0];
+		}
+	}
+}
+
+void Button::MouseDown(Mouse mouse)
+{
 	if (IsMouseOver(mouse))
 	{
-		bitmap = bitmaps[1];
+		bitmap = bitmaps[2];
+		isMouseDown = true;
 	}
 	else
 	{
@@ -43,12 +63,19 @@ void Button::MouseMove(Mouse mouse)
 	}
 }
 
-void Button::MouseDown(Mouse mouse)
-{
-}
-
 void Button::MouseUp(Mouse mouse)
 {
+	isMouseDown = false;
+
+	if (IsMouseOver(mouse))
+	{
+		bitmap = bitmaps[1];
+		buttonClickedEvent->ButtonClicked(name);
+	}
+	else
+	{
+		bitmap = bitmaps[0];
+	}
 }
 
 Button::~Button()
