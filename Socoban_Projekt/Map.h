@@ -14,13 +14,16 @@ private:
 	std::vector<MovableObject*> movableObjects;
 
 	Player *player;
+	void Dispose();
+	void CreateObjects(unsigned short map[22][20]);
 public:
-	Map(std::string mapName);
+	Map();
 	~Map();
 	void DrawObjects();
 	bool UpdateObjects();
 	void KeyPressed(Key key);
 	void KeyReleased(Key key);
+	void LoadMap(std::string mapName);
 };
 
 #endif

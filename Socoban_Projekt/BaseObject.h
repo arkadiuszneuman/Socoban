@@ -11,10 +11,12 @@ private:
 protected:
 	Engine *engine;
 	///<summary>Rozmiar tekstury (jednego kwadratu)</summary>
-	static const int texSize = 30;
+	
 	ALLEGRO_BITMAP *bitmap;
 	Point location;
 public:
+	static const int TextureSize = 30;
+
 	BaseObject(Point &p);
 	Point GetLocation();
 	virtual void Draw();

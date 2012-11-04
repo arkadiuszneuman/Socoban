@@ -4,25 +4,103 @@
 #include "Floor.h"
 #include "Box.h"
 
-Map::Map(std::string mapName)
+Map::Map()
 {
-	objects.push_back(new Floor(Point(0, 0), false));
-	objects.push_back(new Floor(Point(0, 30), false));
+	player = NULL;
+}
 
+void Map::LoadMap(std::string mapName)
+{
+	Dispose();
+
+	//stworzenie i wyzerowanie tablicy mapy
+	unsigned short map[22][20];
+	for (int i = 0; i <= 21; ++i)
+	{
+		for (int z = 0; z <= 19; ++z)
+		{
+			map[i][z] = 0;
+		}
+	}
+	
+	FILE *file2 = fopen("asas.txt", "w");
+	fputs ("fopen example",file2);
+	fclose(file2);
+
+	//wczytanie mapy
+	std::string path;
+	path = "maps/";
+	path += mapName;
+	path += ".soc";
+
+	FILE *file = fopen(path.c_str(), "rb");
+	if(file != NULL) 
+	{
+		fread(map, sizeof(unsigned short), sizeof(map)/sizeof(unsigned short), file);
+		fclose(file);
+	}
+	else
+	{
+		Engine::GetInstance()->ShowError("Blad wczytania pliku z mapa.");
+		return;
+	}
+
+	CreateObjects(map);
+}
+
+void Map::CreateObjects(unsigned short map[22][20])
+{
 	std::vector<Floor*> endPoints;
-	endPoints.push_back(new Floor(Point(60, 60), true));
-	endPoints.push_back(new Floor(Point(60, 90), true));
-	endPoints.push_back(new Floor(Point(60, 120), true));
+	std::vector<Box*> boxes;
+	std::vector<Wall*> walls;
 
+	//wczytanie obiektów
+	for (int i = 0; i <= 21; ++i)
+	{
+		for (int z = 0; z <= 19; ++z)
+		{
+			switch (map[i][z])
+			{
+			case 1:
+				walls.push_back(new Wall(Point(i*BaseObject::TextureSize, z*BaseObject::TextureSize)));
+				break;
+			case 3:
+				player = new Player(Point(i*BaseObject::TextureSize, z*BaseObject::TextureSize));
+				break;
+			case 53:
+				endPoints.push_back(new Floor(Point(i*BaseObject::TextureSize,z*BaseObject::TextureSize), true));
+				player = new Player(Point(i*BaseObject::TextureSize, z*BaseObject::TextureSize));
+				break;
+			case 63:
+				objects.push_back(new Floor(Point(i*BaseObject::TextureSize,z*BaseObject::TextureSize), false));
+				player = new Player(Point(i*BaseObject::TextureSize, z*BaseObject::TextureSize));
+				break;
+			case 4:
+				boxes.push_back(new Box(Point(i*BaseObject::TextureSize, z*BaseObject::TextureSize)));
+				break;
+			case 5:
+				endPoints.push_back(new Floor(Point(i*BaseObject::TextureSize,z*BaseObject::TextureSize), true));
+				break;
+			case 6:
+				objects.push_back(new Floor(Point(i*BaseObject::TextureSize,z*BaseObject::TextureSize), false));
+				break;
+			case 54:
+				boxes.push_back(new Box(Point(i*BaseObject::TextureSize, z*BaseObject::TextureSize)));
+				endPoints.push_back(new Floor(Point(i*BaseObject::TextureSize,z*BaseObject::TextureSize), true));
+				break;
+			case 64:
+				boxes.push_back(new Box(Point(i*BaseObject::TextureSize, z*BaseObject::TextureSize)));
+				objects.push_back(new Floor(Point(i*BaseObject::TextureSize,z*BaseObject::TextureSize), false));
+				break;
+			}
+		}
+	}
+
+	//przepisanie obiektów do odpowiednich kolekcji
 	for (int i = 0; i < endPoints.size(); ++i)
 	{
 		objects.push_back(endPoints[i]);
 	}
-
-	std::vector<Box*> boxes;
-	boxes.push_back(new Box(Point(30, 60)));
-	boxes.push_back(new Box(Point(30, 90)));
-	boxes.push_back(new Box(Point(30, 120)));
 
 	for (int i = 0; i < boxes.size(); ++i)
 	{
@@ -30,17 +108,15 @@ Map::Map(std::string mapName)
 		movableObjects.push_back(boxes[i]);
 	}
 
-	std::vector<Wall*> walls;
-	walls.push_back(new Wall(Point(90, 60)));
-	walls.push_back(new Wall(Point(90, 90)));
-	walls.push_back(new Wall(Point(90, 120)));
-
 	for (int i = 0; i < walls.size(); ++i)
 	{
 		objects.push_back(walls[i]);
 	}
 
-	player = new Player(Point(30, 30), boxes, walls, endPoints);
+	player->SetBoxes(boxes);
+	player->SetWalls(walls);
+	player->SetEndpoints(endPoints);
+
 	movableObjects.push_back(player);
 	objects.push_back(player);
 }
@@ -60,7 +136,12 @@ bool Map::UpdateObjects()
 		movableObjects[i]->Update();
 	}
 
-	return player->IsEnded();
+	if (player != NULL)
+	{
+		return player->IsEnded();
+	}
+
+	return true;
 }
 
 void Map::KeyPressed(Key key)
@@ -73,7 +154,7 @@ void Map::KeyReleased(Key key)
 	player->KeyReleased(key);
 }
 
-Map::~Map()
+void Map::Dispose()
 {
 	for (int i = 0; i < objects.size(); ++i)
 	{
@@ -81,4 +162,10 @@ Map::~Map()
 	}
 
 	objects.clear();
+	movableObjects.clear();
+}
+
+Map::~Map()
+{
+	Dispose();
 }

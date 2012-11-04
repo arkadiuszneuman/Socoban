@@ -38,7 +38,10 @@ private:
 	///<summary>Zwraca s¹siaduj¹c¹ lokacjê na podstawie klawisza (lokacja 0,0 + Key::Right = lokacja 0,30)</summary>
 	Point GetPointMoveDirection(Point point, Key key);
 public:
-	Player(Point &location, std::vector<Box*> &boxes, std::vector<Wall*> &walls, std::vector<Floor*> &endPoints);
+	Player(Point &location);
+	void SetBoxes(std::vector<Box*> &boxes);
+	void SetWalls(std::vector<Wall*> &walls);
+	void SetEndpoints(std::vector<Floor*> &endPoints);
 	void Update();
 	void KeyPressed(Key key);
 	void KeyReleased(Key key);

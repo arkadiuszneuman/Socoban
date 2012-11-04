@@ -4,7 +4,8 @@ void Game::Start()
 {
 	Engine::GetInstance()->Initialize(this, "Socoban");
 
-	map = new Map("ss");
+	map = new Map();
+	map->LoadMap("lvl1");
 
 	Engine::GetInstance()->StartGameLoop();
 

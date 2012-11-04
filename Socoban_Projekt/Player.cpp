@@ -1,12 +1,9 @@
 #include "Player.h"
 #include <sstream>
 
-Player::Player(Point &location, std::vector<Box*> &boxes, std::vector<Wall*> &walls, std::vector<Floor*> &endPoints)
+Player::Player(Point &location)
 	: MovableObject(location)
 {
-	this->boxes = boxes;
-	this->walls = walls;
-	this->endPoints = endPoints;
 	this->animEnded = false;
 	this->isEnded = false;
 	this->showEndAnim = false;
@@ -47,6 +44,21 @@ void Player::LoadEndBitmaps()
 		std::string path = "player/end/" + out.str() + ".bmp";
 		animEnd.push_back(engine->GetBMP(path));
 	}
+}
+
+void Player::SetBoxes(std::vector<Box*> &boxes)
+{
+	this->boxes = boxes;
+}
+
+void Player::SetWalls(std::vector<Wall*> &walls)
+{
+	this->walls = walls;
+}
+
+void Player::SetEndpoints(std::vector<Floor*> &endPoints)
+{
+	this->endPoints = endPoints;
 }
 
 void Player::Update()
@@ -113,16 +125,16 @@ Point Player::GetPointMoveDirection(Point point, Key key)
 	switch (key)
 	{
 	case Key::Down:
-		y += texSize;
+		y += TextureSize;
 		break;
 	case Key::Up:
-		y -= texSize;
+		y -= TextureSize;
 		break;
 	case Key::Left:
-		x -= texSize;
+		x -= TextureSize;
 		break;
 	case Key::Right:
-		x += texSize;
+		x += TextureSize;
 		break;
 	}
 
