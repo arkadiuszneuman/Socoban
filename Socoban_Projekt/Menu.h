@@ -8,8 +8,12 @@
 class Menu : IButtonClickedEvent, public IMouseEvents
 {
 private:
+	void CreateMainMenu();
+	void CreateMapsMenu();
 	void ButtonClicked(std::string name);
+
 	std::vector<Button> buttons;
+	ALLEGRO_BITMAP *bitmap, *menuBitmap, *highscoreBitmap;
 public:
 	Menu();
 	void Draw();
