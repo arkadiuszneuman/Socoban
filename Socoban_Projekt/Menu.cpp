@@ -3,9 +3,12 @@
 Menu::Menu()
 {
 	bitmap = NULL;
+	actualMap = "";
+
 	menuBitmap = Engine::GetInstance()->GetBMP("menu/menubitmap.bmp");
 	highscoreBitmap = Engine::GetInstance()->GetBMP("menu/highscorebitmap.bmp");
 
+	CreateMapsMenu(); //za³adowanie bitmap
 	CreateMainMenu();
 }
 
@@ -53,6 +56,22 @@ void Menu::ButtonClicked(std::string name)
 	{
 		CreateMainMenu();
 	}
+	else if (name.substr(0, 9) == "map/mapno")
+	{
+		actualMap = "lvl" + name.substr(9, 10);
+		bitmap = NULL;
+	}
+	else if (name == "end")
+	{
+		Engine::GetInstance()->endGameLoop = true;
+	}
+}
+
+std::string Menu::GetMap()
+{
+	std::string map = actualMap;
+	actualMap = "";
+	return map;
 }
 
 void Menu::Draw()

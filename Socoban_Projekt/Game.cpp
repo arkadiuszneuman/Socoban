@@ -6,7 +6,6 @@ void Game::Start()
 
 	menu = new Menu();
 	map = new Map();
-	map->LoadMap("lvl1");
 
 	Engine::GetInstance()->AddEvents(this, menu);
 
@@ -26,9 +25,13 @@ void Game::Draw()
 
 void Game::Update()
 {
-	if (map->UpdateObjects())
+	map->UpdateObjects();
+
+	std::string level = menu->GetMap();
+	if (level != "")
 	{
-		Engine::GetInstance()->endGameLoop = true;
+		map->Dispose();
+		map->LoadMap(level);
 	}
 }
 

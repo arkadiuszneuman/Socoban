@@ -142,12 +142,18 @@ bool Map::UpdateObjects()
 
 void Map::KeyPressed(Key key)
 {
-	player->KeyPressed(key);
+	if (player != NULL)
+	{
+		player->KeyPressed(key);
+	}
 }
 
 void Map::KeyReleased(Key key)
 {
-	player->KeyReleased(key);
+	if (player != NULL)
+	{
+		player->KeyReleased(key);
+	}
 }
 
 void Map::Dispose()
@@ -159,6 +165,8 @@ void Map::Dispose()
 
 	objects.clear();
 	movableObjects.clear();
+
+	player = NULL;
 }
 
 Map::~Map()

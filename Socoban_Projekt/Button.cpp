@@ -65,16 +65,19 @@ void Button::MouseDown(Mouse mouse)
 
 void Button::MouseUp(Mouse mouse)
 {
-	isMouseDown = false;
+	if (isMouseDown)
+	{
+		isMouseDown = false;
 
-	if (IsMouseOver(mouse))
-	{
-		bitmap = bitmaps[1];
-		buttonClickedEvent->ButtonClicked(name);
-	}
-	else
-	{
-		bitmap = bitmaps[0];
+		if (IsMouseOver(mouse))
+		{
+			bitmap = bitmaps[1];
+			buttonClickedEvent->ButtonClicked(name);
+		}
+		else
+		{
+			bitmap = bitmaps[0];
+		}
 	}
 }
 

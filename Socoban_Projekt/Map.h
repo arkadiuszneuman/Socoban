@@ -14,11 +14,12 @@ private:
 	std::vector<MovableObject*> movableObjects;
 
 	Player *player;
-	void Dispose();
+	
 	void CreateObjects(unsigned short map[22][20]);
 public:
 	Map();
 	~Map();
+	void Dispose();
 	void DrawObjects();
 	bool UpdateObjects();
 	void KeyPressed(Key key);

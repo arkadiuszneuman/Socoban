@@ -14,9 +14,11 @@ private:
 
 	std::vector<Button> buttons;
 	ALLEGRO_BITMAP *bitmap, *menuBitmap, *highscoreBitmap;
+	std::string actualMap;
 public:
 	Menu();
 	void Draw();
+	std::string GetMap();
 
 	void MouseMove(Mouse mouse);
 	void MouseButtonDown(Mouse mouse);
