@@ -24,7 +24,7 @@ Button::Button(std::string name, Point &location, IButtonClickedEvent *buttonCli
 
 bool Button::IsMouseOver(Mouse mouse)
 {
-	Point size(al_get_bitmap_width(bitmap), al_get_bitmap_height(bitmap));
+	Point size(bitmap->GetWidth(), bitmap->GetHeight());
 	Point mouseLocation(mouse.x, mouse.y);
 
 	if (mouseLocation >= this->location && mouseLocation <= this->location + size)

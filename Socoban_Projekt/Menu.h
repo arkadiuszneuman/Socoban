@@ -10,10 +10,11 @@ class Menu : IButtonClickedEvent, public IMouseEvents
 private:
 	void CreateMainMenu();
 	void CreateMapsMenu();
+	void CreateGameMenu(std::string levelName);
 	void ButtonClicked(std::string name);
 
 	std::vector<Button> buttons;
-	ALLEGRO_BITMAP *bitmap, *menuBitmap, *highscoreBitmap;
+	Bitmap *bitmap, *menuBitmap, *highscoreBitmap, *gameBitmap;
 	std::string actualMap;
 public:
 	Menu();

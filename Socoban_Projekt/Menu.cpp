@@ -7,6 +7,7 @@ Menu::Menu()
 
 	menuBitmap = Engine::GetInstance()->GetBMP("menu/menubitmap.bmp");
 	highscoreBitmap = Engine::GetInstance()->GetBMP("menu/highscorebitmap.bmp");
+	gameBitmap = Engine::GetInstance()->GetBMP("menu/game1.bmp");
 
 	CreateMapsMenu(); //za³adowanie bitmap
 	CreateMainMenu();
@@ -46,6 +47,14 @@ void Menu::CreateMapsMenu()
 	bitmap = menuBitmap;
 }
 
+void Menu::CreateGameMenu(std::string levelName)
+{
+	buttons.clear();
+
+	actualMap = levelName;
+	bitmap = gameBitmap;
+}
+
 void Menu::ButtonClicked(std::string name)
 {
 	if (name == "choosenmap")
@@ -58,13 +67,11 @@ void Menu::ButtonClicked(std::string name)
 	}
 	else if (name.substr(0, 9) == "map/mapno")
 	{
-		actualMap = "lvl" + name.substr(9, 10);
-		bitmap = NULL;
+		CreateGameMenu("lvl" + name.substr(9, 10));
 	}
 	else if (name == "newgame")
 	{
-		actualMap = "lvl1";
-		bitmap = NULL;
+		CreateGameMenu("lvl1");
 	}
 	else if (name == "end")
 	{

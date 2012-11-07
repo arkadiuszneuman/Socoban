@@ -18,8 +18,8 @@ private:
 	///<summary>Kierunek, w którym zwrócony jest gracz</summary>
 	Key moveDirection;
 	int framesCount;
-	std::map<const int, std::vector<ALLEGRO_BITMAP*> > animMove;
-	std::vector<ALLEGRO_BITMAP*> animEnd;
+	std::map<const int, std::vector<Bitmap*> > animMove;
+	std::vector<Bitmap*> animEnd;
 	///<summary>Wszystkie skrzynki, którymi porusza gracz</summary>
 	std::vector<Box*> boxes;
 	std::vector<Wall*> walls;

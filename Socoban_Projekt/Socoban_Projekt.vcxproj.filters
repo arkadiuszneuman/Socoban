@@ -80,6 +80,9 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
+    <ClCompile Include="Bitmap.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -134,6 +137,9 @@
       <Filter>Menu\Headers</Filter>
     </ClInclude>
     <ClInclude Include="IMouseEvents.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Bitmap.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
   </ItemGroup>

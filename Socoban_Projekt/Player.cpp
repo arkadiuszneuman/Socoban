@@ -26,7 +26,7 @@ Player::Player(Point &location)
 
 void Player::LoadBitmaps(std::string bitmapName, Key key)
 {
-	std::vector<ALLEGRO_BITMAP*> vector;
+	std::vector<Bitmap*> vector;
 	vector.push_back(engine->GetBMP("player/move/" + bitmapName + "1.bmp"));
 	vector.push_back(engine->GetBMP("player/move/" + bitmapName + "2.bmp"));
 	vector.push_back(engine->GetBMP("player/move/" + bitmapName + "1.bmp"));

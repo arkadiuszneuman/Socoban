@@ -12,7 +12,7 @@ protected:
 	Engine *engine;
 	///<summary>Rozmiar tekstury (jednego kwadratu)</summary>
 	
-	ALLEGRO_BITMAP *bitmap;
+	Bitmap *bitmap;
 	Point location;
 public:
 	static const int TextureSize = 30;

@@ -4,15 +4,16 @@
 #include "Mouse.h"
 
 Engine *Engine::eng = NULL;
-bool Engine::allegroInitialized = false;
-ALLEGRO_DISPLAY *Engine::display = NULL;
-ALLEGRO_EVENT_QUEUE *Engine::eventQueue = NULL;
-ALLEGRO_TIMER *Engine::timer = NULL;
+
 
 Engine::Engine()
 {
 	endGameLoop = false;
 	game = NULL;
+	allegroInitialized = false;
+	display = NULL;
+	eventQueue = NULL;
+	timer = NULL;
 }
 
 void Engine::Initialize(std::string gameName)
@@ -36,7 +37,7 @@ void Engine::Initialize(std::string gameName)
 			ShowError("Blad podczas inicjalizacji myszy.");
 			return;
 		}
- 
+		
 		display = al_create_display(800, 600);
 		if (!display) 
 		{
@@ -86,12 +87,22 @@ void Engine::ShowError(std::string message)
 									 NULL, ALLEGRO_MESSAGEBOX_ERROR);
 }
 
-void Engine::DrawBitmap(ALLEGRO_BITMAP *bitmap, int x, int y)
+void Engine::DrawBitmap(Bitmap *bitmap, int x, int y)
 {
-	al_draw_bitmap(bitmap, x, y, 0);
+	bitmap->Draw(x, y);
 }
 
-ALLEGRO_BITMAP *Engine::GetBMP(std::string filePath)
+int Engine::GetDisplayWidth()
+{
+	return al_get_display_width(display);
+}
+
+int Engine::GetDisplayHeight()
+{
+	return al_get_display_width(display);
+}
+
+Bitmap *Engine::GetBMP(std::string filePath)
 {
 	if (bitmapsPointiers.count(filePath))
 	{
@@ -99,20 +110,7 @@ ALLEGRO_BITMAP *Engine::GetBMP(std::string filePath)
 	}
 	else
 	{
-		std::string fileFolder = "graphics/";
-
-		ALLEGRO_PATH *path = al_get_standard_path(ALLEGRO_RESOURCES_PATH);
-		al_set_path_filename(path, (fileFolder + filePath).c_str());
-
-		ALLEGRO_BITMAP *bmp = al_load_bitmap(al_path_cstr(path, '/'));
-		al_convert_mask_to_alpha(bmp, al_map_rgb(255, 0, 255));
-
-		if (bmp == NULL)
-		{
-			ShowError("Blad wczytania bitmapy: " + filePath);
-		}
-	
-		al_destroy_path(path);
+		Bitmap *bmp = new Bitmap("graphics/" + filePath);
 
 		bitmapsPointiers[filePath] = bmp;
 
@@ -202,9 +200,9 @@ Engine *Engine::GetInstance()
 
 void Engine::DisposeBitmaps()
 {
-	for (std::map<std::string, ALLEGRO_BITMAP*>::const_iterator iterator = bitmapsPointiers.begin(); iterator != bitmapsPointiers.end(); ++iterator)
+	for (std::map<std::string, Bitmap*>::const_iterator iterator = bitmapsPointiers.begin(); iterator != bitmapsPointiers.end(); ++iterator)
 	{
-		al_destroy_bitmap(iterator->second);
+		delete iterator->second;
 	}
 
 	bitmapsPointiers.clear();

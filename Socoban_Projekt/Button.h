@@ -9,7 +9,7 @@
 class Button : public BaseObject
 {
 private:
-	ALLEGRO_BITMAP* bitmaps[3];
+	Bitmap *bitmaps[3];
 	IButtonClickedEvent *buttonClickedEvent;
 	bool IsMouseOver(Mouse mouse);
 	bool isMouseDown;
