@@ -61,6 +61,11 @@ void Menu::ButtonClicked(std::string name)
 		actualMap = "lvl" + name.substr(9, 10);
 		bitmap = NULL;
 	}
+	else if (name == "newgame")
+	{
+		actualMap = "lvl1";
+		bitmap = NULL;
+	}
 	else if (name == "end")
 	{
 		Engine::GetInstance()->endGameLoop = true;
