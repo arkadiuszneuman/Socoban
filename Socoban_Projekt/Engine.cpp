@@ -99,7 +99,7 @@ int Engine::GetDisplayWidth()
 
 int Engine::GetDisplayHeight()
 {
-	return al_get_display_width(display);
+	return al_get_display_height(display);
 }
 
 Bitmap *Engine::GetBMP(std::string filePath)

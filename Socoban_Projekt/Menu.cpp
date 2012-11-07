@@ -9,7 +9,7 @@ Menu::Menu()
 	highscoreBitmap = Engine::GetInstance()->GetBMP("menu/highscorebitmap.bmp");
 	gameBitmap = Engine::GetInstance()->GetBMP("menu/game1.bmp");
 
-	CreateMapsMenu(); //za³adowanie bitmap
+	//CreateMapsMenu(); //za³adowanie bitmap
 	CreateMainMenu();
 }
 
@@ -90,7 +90,8 @@ void Menu::Draw()
 {
 	if (bitmap != NULL)
 	{
-		Engine::GetInstance()->DrawBitmap(bitmap, 0, 0);
+		Engine::GetInstance()->DrawBitmap(bitmap, Engine::GetInstance()->GetDisplayWidth() - bitmap->GetWidth(), 
+			Engine::GetInstance()->GetDisplayHeight() - bitmap->GetHeight());
 	}
 
 	for (int i = 0; i < buttons.size(); ++i)
