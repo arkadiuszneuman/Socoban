@@ -11,11 +11,13 @@ private:
 	void CreateMainMenu();
 	void CreateMapsMenu();
 	void CreateGameMenu(std::string levelName);
+	void CreateGameWindow(std::string windowName, std::string firstBtnName, std::string secondBtnName);
 	void ButtonClicked(std::string name);
 
 	std::vector<Button> buttons;
-	Bitmap *bitmap, *menuBitmap, *highscoreBitmap, *gameBitmap;
-	std::string actualMap;
+	Bitmap *bitmap, *menuBitmap, *highscoreBitmap, *gameBitmap, *windowBitmap;
+	std::string actualMap, mapToLoad;
+	bool freeze;
 public:
 	Menu();
 	void Draw();
@@ -24,6 +26,9 @@ public:
 	void MouseMove(Mouse mouse);
 	void MouseButtonDown(Mouse mouse);
 	void MouseButtonUp(Mouse mouse);
+
+	void NextMap();
+	bool IsFreezed();
 };
 
 #endif

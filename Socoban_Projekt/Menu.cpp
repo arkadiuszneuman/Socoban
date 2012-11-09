@@ -1,15 +1,17 @@
 #include "Menu.h"
+#include <sstream>
 
 Menu::Menu()
 {
 	bitmap = NULL;
+	windowBitmap = NULL;
 	actualMap = "";
+	freeze = false;
 
 	menuBitmap = Engine::GetInstance()->GetBMP("menu/menubitmap.bmp");
 	highscoreBitmap = Engine::GetInstance()->GetBMP("menu/highscorebitmap.bmp");
 	gameBitmap = Engine::GetInstance()->GetBMP("menu/game1.bmp");
 
-	//CreateMapsMenu(); //za³adowanie bitmap
 	CreateMainMenu();
 }
 
@@ -24,6 +26,8 @@ void Menu::CreateMainMenu()
 	buttons.push_back(Button("end", Point(276, 450), this));
 
 	bitmap = menuBitmap;
+	windowBitmap = NULL;
+	mapToLoad = "menu";
 }
 
 void Menu::CreateMapsMenu()
@@ -45,14 +49,33 @@ void Menu::CreateMapsMenu()
 	buttons.push_back(Button("usermap", Point(280, 450), this));
 
 	bitmap = menuBitmap;
+	windowBitmap = NULL;
 }
 
 void Menu::CreateGameMenu(std::string levelName)
 {
 	buttons.clear();
 
+	buttons.push_back(Button("restart", Point(Engine::GetInstance()->GetDisplayWidth() - 120, 30), this));
+	buttons.push_back(Button("close", Point(Engine::GetInstance()->GetDisplayWidth() - 120, 70), this));
+
 	actualMap = levelName;
+	mapToLoad = levelName;
 	bitmap = gameBitmap;
+	windowBitmap = NULL;
+}
+
+void Menu::CreateGameWindow(std::string windowName, std::string firstBtnName, std::string secondBtnName)
+{
+	this->windowBitmap = Engine::GetInstance()->GetBMP("menu/windows/" + windowName + ".bmp");
+
+	Point bitmapLocation((Engine::GetInstance()->GetDisplayWidth() / 2) - (windowBitmap->GetWidth() / 2),
+			(Engine::GetInstance()->GetDisplayHeight() / 2) - (windowBitmap->GetHeight() / 2));
+
+	buttons.push_back(Button("windows/" + firstBtnName, Point(bitmapLocation.GetX() + 20, 
+		bitmapLocation.GetY() + this->windowBitmap->GetHeight() - 30), this));
+	buttons.push_back(Button("windows/" + secondBtnName, Point(bitmapLocation.GetX() + this->windowBitmap->GetWidth() - 80, 
+		bitmapLocation.GetY() + this->windowBitmap->GetHeight() - 30), this));
 }
 
 void Menu::ButtonClicked(std::string name)
@@ -73,17 +96,56 @@ void Menu::ButtonClicked(std::string name)
 	{
 		CreateGameMenu("lvl1");
 	}
+	else if (name == "restart")
+	{
+		CreateGameMenu(actualMap);
+	}
+	else if (name == "close" || name == "windows/endsmall")
+	{
+		freeze = false;
+		CreateMainMenu();	
+	}
+	else if (name == "windows/next")
+	{
+		std::string lvl = "lvl";
+		int lvlNo = atoi(actualMap.substr(actualMap.size() - 1, actualMap.size()).c_str());
+		std::stringstream out;
+		out << lvlNo + 1;
+		lvl += out.str();
+
+		freeze = false;
+		CreateGameMenu(lvl);	
+	}
 	else if (name == "end")
 	{
 		Engine::GetInstance()->endGameLoop = true;
 	}
 }
 
+void Menu::NextMap()
+{
+	this->freeze = true;
+
+	if (actualMap == "lvl10")
+	{
+
+	}
+	else
+	{
+		CreateGameWindow("congratulations", "next", "endsmall");
+	}
+}
+
 std::string Menu::GetMap()
 {
-	std::string map = actualMap;
-	actualMap = "";
+	std::string map = mapToLoad;
+	mapToLoad = "";
 	return map;
+}
+
+bool Menu::IsFreezed()
+{
+	return this->freeze;
 }
 
 void Menu::Draw()
@@ -92,6 +154,12 @@ void Menu::Draw()
 	{
 		Engine::GetInstance()->DrawBitmap(bitmap, Engine::GetInstance()->GetDisplayWidth() - bitmap->GetWidth(), 
 			Engine::GetInstance()->GetDisplayHeight() - bitmap->GetHeight());
+	}
+
+	if (windowBitmap != NULL)
+	{
+		windowBitmap->Draw((Engine::GetInstance()->GetDisplayWidth() / 2) - (windowBitmap->GetWidth() / 2),
+			(Engine::GetInstance()->GetDisplayHeight() / 2) - (windowBitmap->GetHeight() / 2));
 	}
 
 	for (int i = 0; i < buttons.size(); ++i)

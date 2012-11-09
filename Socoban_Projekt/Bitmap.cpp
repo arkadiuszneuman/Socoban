@@ -9,8 +9,15 @@ Bitmap::Bitmap(std::string bitmapPath)
 	ALLEGRO_PATH *path = al_get_standard_path(ALLEGRO_RESOURCES_PATH);
 	al_set_path_filename(path, (fileFolder + bitmapPath).c_str());
 
-	bitmap = al_load_bitmap(al_path_cstr(path, '/'));
-	al_convert_mask_to_alpha(bitmap, al_map_rgb(255, 0, 255));
+	try
+	{
+		bitmap = al_load_bitmap(al_path_cstr(path, '/'));
+		if (bitmap != NULL)
+		{
+			al_convert_mask_to_alpha(bitmap, al_map_rgb(255, 0, 255));
+		}
+	}
+	catch (...) { }
 
 	if (bitmap == NULL)
 	{

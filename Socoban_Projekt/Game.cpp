@@ -25,13 +25,22 @@ void Game::Draw()
 
 void Game::Update()
 {
-	map->UpdateObjects();
-
-	std::string level = menu->GetMap();
-	if (level != "")
+	if (!menu->IsFreezed())
 	{
-		map->Dispose();
-		map->LoadMap(level);
+		std::string level = menu->GetMap();
+		if (level != "")
+		{
+			map->Dispose();
+			if (level != "menu")
+			{
+				map->LoadMap(level);
+			}
+		}
+
+		if (map->UpdateObjects())
+		{
+			menu->NextMap();
+		}
 	}
 }
 

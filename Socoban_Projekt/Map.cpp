@@ -137,7 +137,7 @@ bool Map::UpdateObjects()
 		return player->IsEnded();
 	}
 
-	return true;
+	return false;
 }
 
 void Map::KeyPressed(Key key)
