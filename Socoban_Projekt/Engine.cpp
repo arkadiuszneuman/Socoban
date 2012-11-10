@@ -14,6 +14,7 @@ Engine::Engine()
 	display = NULL;
 	eventQueue = NULL;
 	timer = NULL;
+	font = NULL;
 }
 
 void Engine::Initialize(std::string gameName)
@@ -42,6 +43,16 @@ void Engine::Initialize(std::string gameName)
 		if (!display) 
 		{
 			ShowError("Blad podczas inicjalizacji.");
+			return;
+		}
+
+		al_init_font_addon();
+		al_init_ttf_addon();
+
+		font = al_load_ttf_font("gordon.ttf", 25, 0);
+		if (!font) 
+		{
+			ShowError("Blad podczas inicjalizacji czcionki.");
 			return;
 		}
 
@@ -90,6 +101,11 @@ void Engine::ShowError(std::string message)
 void Engine::DrawBitmap(Bitmap *bitmap, int x, int y)
 {
 	bitmap->Draw(x, y);
+}
+
+void Engine::DrawGameText(std::string text, int x, int y, int r, int g, int b)
+{
+	al_draw_text(this->font, al_map_rgb(r, g, b), x, y, ALLEGRO_ALIGN_LEFT, text.c_str());
 }
 
 int Engine::GetDisplayWidth()
@@ -213,6 +229,7 @@ void Engine::Exit()
 	al_destroy_timer(timer);
 	al_destroy_display(display);
 	al_destroy_event_queue(eventQueue);
+	al_destroy_font(font);
 
 	DisposeBitmaps();
 

@@ -1,5 +1,7 @@
 #include "Menu.h"
 #include <sstream>
+#include <time.h>
+#include <ctime>
 
 Menu::Menu()
 {
@@ -161,6 +163,13 @@ void Menu::Draw()
 		windowBitmap->Draw((Engine::GetInstance()->GetDisplayWidth() / 2) - (windowBitmap->GetWidth() / 2),
 			(Engine::GetInstance()->GetDisplayHeight() / 2) - (windowBitmap->GetHeight() / 2));
 	}
+	time_t sec = time(NULL);
+	
+	char buffer[80];
+	strftime (buffer, 80,"%X", localtime(&sec));
+	std::string text = buffer;
+
+	Engine::GetInstance()->DrawGameText(text, 500, 500, 255, 255, 255);
 
 	for (int i = 0; i < buttons.size(); ++i)
 	{
