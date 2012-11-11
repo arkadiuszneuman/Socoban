@@ -103,9 +103,11 @@ void Engine::DrawBitmap(Bitmap *bitmap, int x, int y)
 	bitmap->Draw(x, y);
 }
 
-void Engine::DrawGameText(std::string text, int x, int y, int r, int g, int b)
+void Engine::DrawGameText(std::string text, int x, int y, int r, int g, int b, bool center)
 {
-	al_draw_text(this->font, al_map_rgb(r, g, b), x, y, ALLEGRO_ALIGN_LEFT, text.c_str());
+	int flag = center ? ALLEGRO_ALIGN_CENTRE : ALLEGRO_ALIGN_LEFT;
+
+	al_draw_text(this->font, al_map_rgb(r, g, b), x, y, flag, text.c_str());
 }
 
 int Engine::GetDisplayWidth()

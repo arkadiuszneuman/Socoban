@@ -35,6 +35,8 @@ private:
 	bool animEnded;
 	bool showEndAnim;
 	bool isEnded;
+
+	int steps;
 	///<summary>Zwraca s¹siaduj¹c¹ lokacjê na podstawie klawisza (lokacja 0,0 + Key::Right = lokacja 0,30)</summary>
 	Point GetPointMoveDirection(Point point, Key key);
 public:
@@ -46,6 +48,7 @@ public:
 	void KeyPressed(Key key);
 	void KeyReleased(Key key);
 	bool IsEnded();
+	int GetSteps();
 	~Player();
 };
 

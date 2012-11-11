@@ -17,11 +17,12 @@ Player::Player(Point &location)
 		LoadEndBitmaps();
 		
 		bitmap = animMove[(int)Key::Down][0];
-		moveDirection = Key::Down;
+		this->moveDirection = Key::Down;
 	}
 
-	pressedKey = Key::None;
-	framesCount = 0;
+	this->pressedKey = Key::None;
+	this->framesCount = 0;
+	this->steps = 0;
 }
 
 void Player::LoadBitmaps(std::string bitmapName, Key key)
@@ -87,6 +88,7 @@ void Player::Update()
 				if (CheckBoxes(playerDestination) && CheckWalls(playerDestination))
 				{
 					Move(playerDestination);
+					++steps;
 				}
 				else
 				{
@@ -248,6 +250,11 @@ void Player::KeyReleased(Key key)
 	{
 		pressedKey = Key::None;
 	}
+}
+
+int Player::GetSteps()
+{
+	return this->steps;
 }
 
 Player::~Player()

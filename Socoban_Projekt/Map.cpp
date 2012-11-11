@@ -156,11 +156,22 @@ void Map::KeyReleased(Key key)
 	}
 }
 
+
+int Map::GetPlayerSteps()
+{
+	if (player != NULL)
+	{
+		return this->player->GetSteps();
+	}
+	
+	return 0;
+}
+
 void Map::Dispose()
 {
 	for (int i = 0; i < objects.size(); ++i)
 	{
-		delete(objects[i]);
+		delete objects[i];
 	}
 
 	objects.clear();

@@ -25,6 +25,7 @@ public:
 	void KeyPressed(Key key);
 	void KeyReleased(Key key);
 	void LoadMap(std::string mapName);
+	int GetPlayerSteps();
 };
 
 #endif

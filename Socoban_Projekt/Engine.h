@@ -29,7 +29,7 @@ private:
 public:
 	void Initialize(std::string gameName);
 	void DrawBitmap(Bitmap *bitmap, int x, int y);
-	void DrawGameText(std::string text, int x, int y, int r, int g, int b);
+	void DrawGameText(std::string text, int x, int y, int r, int g, int b, bool center);
 	void StartGameLoop();
 	void ShowError(std::string message);
 	void AddEvents(IGame *game, IMouseEvents *mouseEvents);

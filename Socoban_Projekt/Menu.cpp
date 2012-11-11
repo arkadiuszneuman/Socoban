@@ -3,15 +3,17 @@
 
 Menu::Menu()
 {
+	engine = Engine::GetInstance();
 	bitmap = NULL;
 	windowBitmap = NULL;
 	actualMap = "";
 	freeze = false;
 	isInGame = false;
+	playerSteps = 0;
 
-	menuBitmap = Engine::GetInstance()->GetBMP("menu/menubitmap.bmp");
-	highscoreBitmap = Engine::GetInstance()->GetBMP("menu/highscorebitmap.bmp");
-	gameBitmap = Engine::GetInstance()->GetBMP("menu/game1.bmp");
+	menuBitmap = engine->GetBMP("menu/menubitmap.bmp");
+	highscoreBitmap = engine->GetBMP("menu/highscorebitmap.bmp");
+	gameBitmap = engine->GetBMP("menu/game1.bmp");
 
 	CreateMainMenu();
 }
@@ -59,8 +61,8 @@ void Menu::CreateGameMenu(std::string levelName)
 {
 	buttons.clear();
 
-	buttons.push_back(Button("restart", Point(Engine::GetInstance()->GetDisplayWidth() - 120, 30), this));
-	buttons.push_back(Button("close", Point(Engine::GetInstance()->GetDisplayWidth() - 120, 70), this));
+	buttons.push_back(Button("restart", Point(engine->GetDisplayWidth() - 120, 30), this));
+	buttons.push_back(Button("close", Point(engine->GetDisplayWidth() - 120, 70), this));
 
 	actualMap = levelName;
 	mapToLoad = levelName;
@@ -68,15 +70,16 @@ void Menu::CreateGameMenu(std::string levelName)
 	windowBitmap = NULL;
 
 	isInGame = true;
+	playerSteps = 0;
 	startTime = time(NULL);
 }
 
 void Menu::CreateGameWindow(std::string windowName, std::string firstBtnName, std::string secondBtnName)
 {
-	this->windowBitmap = Engine::GetInstance()->GetBMP("menu/windows/" + windowName + ".bmp");
+	this->windowBitmap = engine->GetBMP("menu/windows/" + windowName + ".bmp");
 
-	Point bitmapLocation((Engine::GetInstance()->GetDisplayWidth() / 2) - (windowBitmap->GetWidth() / 2),
-			(Engine::GetInstance()->GetDisplayHeight() / 2) - (windowBitmap->GetHeight() / 2));
+	Point bitmapLocation((engine->GetDisplayWidth() / 2) - (windowBitmap->GetWidth() / 2),
+			(engine->GetDisplayHeight() / 2) - (windowBitmap->GetHeight() / 2));
 
 	buttons.push_back(Button("windows/" + firstBtnName, Point(bitmapLocation.GetX() + 20, 
 		bitmapLocation.GetY() + this->windowBitmap->GetHeight() - 30), this));
@@ -124,7 +127,7 @@ void Menu::ButtonClicked(std::string name)
 	}
 	else if (name == "end")
 	{
-		Engine::GetInstance()->endGameLoop = true;
+		engine->endGameLoop = true;
 	}
 }
 
@@ -158,19 +161,19 @@ void Menu::Draw()
 {
 	if (bitmap != NULL)
 	{
-		Engine::GetInstance()->DrawBitmap(bitmap, Engine::GetInstance()->GetDisplayWidth() - bitmap->GetWidth(), 
-			Engine::GetInstance()->GetDisplayHeight() - bitmap->GetHeight());
+		engine->DrawBitmap(bitmap, engine->GetDisplayWidth() - bitmap->GetWidth(), 
+			engine->GetDisplayHeight() - bitmap->GetHeight());
 	}
 
 	if (windowBitmap != NULL)
 	{
-		windowBitmap->Draw((Engine::GetInstance()->GetDisplayWidth() / 2) - (windowBitmap->GetWidth() / 2),
-			(Engine::GetInstance()->GetDisplayHeight() / 2) - (windowBitmap->GetHeight() / 2));
+		windowBitmap->Draw((engine->GetDisplayWidth() / 2) - (windowBitmap->GetWidth() / 2),
+			(engine->GetDisplayHeight() / 2) - (windowBitmap->GetHeight() / 2));
 	}
 	
 	if (isInGame)
 	{
-		Engine::GetInstance()->DrawGameText(playingTime, Engine::GetInstance()->GetDisplayWidth() - 110, 500, 255, 255, 255);
+		DrawGameText();
 	}
 
 	for (int i = 0; i < buttons.size(); ++i)
@@ -179,7 +182,29 @@ void Menu::Draw()
 	}
 }
 
-void Menu::Update()
+void Menu::DrawGameText()
+{
+	int r = 255;
+	int g = 160;
+	int b = 0;
+
+	engine->DrawGameText("Kroki:", engine->GetDisplayWidth() - (bitmap->GetWidth() / 2),
+			engine->GetDisplayHeight() - 200, r, g, b, true);
+
+	std::ostringstream ss;
+	ss << playerSteps;
+
+	engine->DrawGameText(ss.str(), engine->GetDisplayWidth() - (bitmap->GetWidth() / 2),
+		engine->GetDisplayHeight() - 175, r, g, b, true);
+
+	engine->DrawGameText("Czas:", engine->GetDisplayWidth() - (bitmap->GetWidth() / 2),
+		engine->GetDisplayHeight() - 125, r, g, b, true);
+
+	engine->DrawGameText(playingTime, engine->GetDisplayWidth() - (bitmap->GetWidth() / 2),
+		engine->GetDisplayHeight() - 100, r, g, b, true);
+}
+
+void Menu::Update(int playerSteps)
 {
 	if (isInGame)
 	{
@@ -189,6 +214,8 @@ void Menu::Update()
 		char buffer[80];
 		strftime (buffer, 80,"%X", gmtime(&diff));
 		playingTime = buffer;
+
+		this->playerSteps = playerSteps;
 	}
 }
 

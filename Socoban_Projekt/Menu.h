@@ -15,17 +15,20 @@ private:
 	void CreateGameMenu(std::string levelName);
 	void CreateGameWindow(std::string windowName, std::string firstBtnName, std::string secondBtnName);
 	void ButtonClicked(std::string name);
+	void DrawGameText();
 
+	Engine *engine;
 	std::vector<Button> buttons;
 	Bitmap *bitmap, *menuBitmap, *highscoreBitmap, *gameBitmap, *windowBitmap;
 	std::string actualMap, mapToLoad, playingTime;
 	bool freeze, isInGame;
 	time_t startTime;
+	int playerSteps;
 public:
 	Menu();
 
 	void Draw();
-	void Update();
+	void Update(int playerSteps);
 
 	std::string GetMap();
 

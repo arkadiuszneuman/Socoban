@@ -42,7 +42,7 @@ void Game::Update()
 			menu->NextMap();
 		}
 
-		menu->Update();
+		menu->Update(map->GetPlayerSteps());
 	}
 }
 
