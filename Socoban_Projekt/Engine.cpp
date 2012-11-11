@@ -49,7 +49,7 @@ void Engine::Initialize(std::string gameName)
 		al_init_font_addon();
 		al_init_ttf_addon();
 
-		font = al_load_ttf_font("gordon.ttf", 25, 0);
+		font = al_load_ttf_font("tahoma.ttf", 20, 0);
 		if (!font) 
 		{
 			ShowError("Blad podczas inicjalizacji czcionki.");

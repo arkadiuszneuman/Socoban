@@ -1,7 +1,5 @@
 #include "Menu.h"
 #include <sstream>
-#include <time.h>
-#include <ctime>
 
 Menu::Menu()
 {
@@ -9,6 +7,7 @@ Menu::Menu()
 	windowBitmap = NULL;
 	actualMap = "";
 	freeze = false;
+	isInGame = false;
 
 	menuBitmap = Engine::GetInstance()->GetBMP("menu/menubitmap.bmp");
 	highscoreBitmap = Engine::GetInstance()->GetBMP("menu/highscorebitmap.bmp");
@@ -30,6 +29,8 @@ void Menu::CreateMainMenu()
 	bitmap = menuBitmap;
 	windowBitmap = NULL;
 	mapToLoad = "menu";
+
+	isInGame = false;
 }
 
 void Menu::CreateMapsMenu()
@@ -65,6 +66,9 @@ void Menu::CreateGameMenu(std::string levelName)
 	mapToLoad = levelName;
 	bitmap = gameBitmap;
 	windowBitmap = NULL;
+
+	isInGame = true;
+	startTime = time(NULL);
 }
 
 void Menu::CreateGameWindow(std::string windowName, std::string firstBtnName, std::string secondBtnName)
@@ -163,17 +167,28 @@ void Menu::Draw()
 		windowBitmap->Draw((Engine::GetInstance()->GetDisplayWidth() / 2) - (windowBitmap->GetWidth() / 2),
 			(Engine::GetInstance()->GetDisplayHeight() / 2) - (windowBitmap->GetHeight() / 2));
 	}
-	time_t sec = time(NULL);
 	
-	char buffer[80];
-	strftime (buffer, 80,"%X", localtime(&sec));
-	std::string text = buffer;
-
-	Engine::GetInstance()->DrawGameText(text, 500, 500, 255, 255, 255);
+	if (isInGame)
+	{
+		Engine::GetInstance()->DrawGameText(playingTime, Engine::GetInstance()->GetDisplayWidth() - 110, 500, 255, 255, 255);
+	}
 
 	for (int i = 0; i < buttons.size(); ++i)
 	{
 		buttons[i].Draw();
+	}
+}
+
+void Menu::Update()
+{
+	if (isInGame)
+	{
+		time_t endTime = time(NULL);
+		time_t diff = endTime - startTime;
+		
+		char buffer[80];
+		strftime (buffer, 80,"%X", gmtime(&diff));
+		playingTime = buffer;
 	}
 }
 

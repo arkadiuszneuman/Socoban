@@ -4,6 +4,8 @@
 #include "IButtonClickedEvent.h"
 #include "Button.h"
 #include <vector>
+#include <time.h>
+#include <ctime>
 
 class Menu : IButtonClickedEvent, public IMouseEvents
 {
@@ -16,11 +18,15 @@ private:
 
 	std::vector<Button> buttons;
 	Bitmap *bitmap, *menuBitmap, *highscoreBitmap, *gameBitmap, *windowBitmap;
-	std::string actualMap, mapToLoad;
-	bool freeze;
+	std::string actualMap, mapToLoad, playingTime;
+	bool freeze, isInGame;
+	time_t startTime;
 public:
 	Menu();
+
 	void Draw();
+	void Update();
+
 	std::string GetMap();
 
 	void MouseMove(Mouse mouse);

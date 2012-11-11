@@ -41,6 +41,8 @@ void Game::Update()
 		{
 			menu->NextMap();
 		}
+
+		menu->Update();
 	}
 }
 
