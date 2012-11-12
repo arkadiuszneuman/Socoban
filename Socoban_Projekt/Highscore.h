@@ -3,10 +3,13 @@
 
 #include <string>
 
-struct Highscore
+class Highscore
 {
+public:
 	std::string PlayerName, Time;
 	int Steps;
+
+	Highscore();
 };
 
 #endif

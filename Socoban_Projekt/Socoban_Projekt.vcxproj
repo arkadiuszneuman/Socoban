@@ -76,6 +76,8 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Highscore.cpp" />
+    <ClCompile Include="HighscoreCollection.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -89,6 +91,8 @@
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Highscore.h" />
+    <ClInclude Include="HighscoreCollection.h" />
     <ClInclude Include="IButtonClickedEvent.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Floor.h" />

@@ -83,6 +83,12 @@
     <ClCompile Include="Bitmap.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="HighscoreCollection.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Highscore.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -141,6 +147,12 @@
     </ClInclude>
     <ClInclude Include="Bitmap.h">
       <Filter>Engine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="HighscoreCollection.h">
+      <Filter>Menu\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Highscore.h">
+      <Filter>Menu\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

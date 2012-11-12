@@ -3,6 +3,7 @@
 
 #include "IButtonClickedEvent.h"
 #include "Button.h"
+#include "HighscoreCollection.h"
 #include <vector>
 #include <time.h>
 #include <ctime>

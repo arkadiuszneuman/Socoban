@@ -15,6 +15,9 @@ Menu::Menu()
 	highscoreBitmap = engine->GetBMP("menu/highscorebitmap.bmp");
 	gameBitmap = engine->GetBMP("menu/game1.bmp");
 
+	HighscoreCollection *h = new HighscoreCollection();
+	delete h;
+
 	CreateMainMenu();
 }
 
