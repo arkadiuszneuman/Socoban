@@ -3,16 +3,23 @@
 
 #include "Highscore.h"
 #include <vector>
+#include <time.h>
 
 class HighscoreCollection
 {
 private:
 	///<summary>Zbór najlepszych wyników (10 plansz po 10 wyników)</summary>
-	//Highscore highscores[10][10];
+	Highscore highscores[10][10];
 	//std::vector<std::vector<Highscore> > highscores;
+	void SaveHighscore();
+	void LoadHighscore();
+	bool IsHighscoreExists();
+
+	std::vector<std::string> SplitString(const std::string &s, char delim);
+	bool IsFaster(const std::string &time1, const std::string &time2);
 public:
 	HighscoreCollection();
-	~HighscoreCollection();
+	bool IsQualified(int mapNo, int steps, std::string time);
 };
 
 #endif

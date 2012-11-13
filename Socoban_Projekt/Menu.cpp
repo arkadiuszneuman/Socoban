@@ -16,6 +16,7 @@ Menu::Menu()
 	gameBitmap = engine->GetBMP("menu/game1.bmp");
 
 	HighscoreCollection *h = new HighscoreCollection();
+	h->IsQualified(1, 10000, "99:99:98");
 	delete h;
 
 	CreateMainMenu();
@@ -215,7 +216,7 @@ void Menu::Update(int playerSteps)
 		time_t diff = endTime - startTime;
 		
 		char buffer[80];
-		strftime (buffer, 80,"%X", gmtime(&diff));
+		strftime(buffer, 80,"%X", gmtime(&diff));
 		playingTime = buffer;
 
 		this->playerSteps = playerSteps;
