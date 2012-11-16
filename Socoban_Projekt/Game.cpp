@@ -7,7 +7,7 @@ void Game::Start()
 	menu = new Menu();
 	map = new Map();
 
-	Engine::GetInstance()->AddEvents(this, menu);
+	Engine::GetInstance()->AddEvents(this, menu, this);
 
 	Engine::GetInstance()->StartGameLoop();
 
@@ -54,4 +54,9 @@ void Game::KeyDownEvent(Key key)
 void Game::KeyUpEvent(Key key)
 {
 	map->KeyReleased(key);
+}
+
+void Game::CharEntered(char c)
+{
+	menu->CharEntered(c);
 }

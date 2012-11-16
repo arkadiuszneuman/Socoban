@@ -16,8 +16,9 @@ Menu::Menu()
 	gameBitmap = engine->GetBMP("menu/game1.bmp");
 
 	HighscoreCollection *h = new HighscoreCollection();
-	h->IsQualified(1, 10000, "99:99:98");
-	delete h;
+	//h->IsQualified(1, 10000, "99:99:98");
+	//h->AddHighscore(1, "arek2", "99:99:98", 10000);
+	//delete h;
 
 	CreateMainMenu();
 }
@@ -85,10 +86,16 @@ void Menu::CreateGameWindow(std::string windowName, std::string firstBtnName, st
 	Point bitmapLocation((engine->GetDisplayWidth() / 2) - (windowBitmap->GetWidth() / 2),
 			(engine->GetDisplayHeight() / 2) - (windowBitmap->GetHeight() / 2));
 
-	buttons.push_back(Button("windows/" + firstBtnName, Point(bitmapLocation.GetX() + 20, 
-		bitmapLocation.GetY() + this->windowBitmap->GetHeight() - 30), this));
-	buttons.push_back(Button("windows/" + secondBtnName, Point(bitmapLocation.GetX() + this->windowBitmap->GetWidth() - 80, 
-		bitmapLocation.GetY() + this->windowBitmap->GetHeight() - 30), this));
+	if (firstBtnName.length() > 0)
+	{
+		buttons.push_back(Button("windows/" + firstBtnName, Point(bitmapLocation.GetX() + 20, 
+			bitmapLocation.GetY() + this->windowBitmap->GetHeight() - 30), this));
+	}
+	if (secondBtnName.length() > 0)
+	{
+		buttons.push_back(Button("windows/" + secondBtnName, Point(bitmapLocation.GetX() + this->windowBitmap->GetWidth() - 80, 
+			bitmapLocation.GetY() + this->windowBitmap->GetHeight() - 30), this));
+	}
 }
 
 void Menu::ButtonClicked(std::string name)
@@ -212,14 +219,14 @@ void Menu::Update(int playerSteps)
 {
 	if (isInGame)
 	{
-		time_t endTime = time(NULL);
+		/*time_t endTime = time(NULL);
 		time_t diff = endTime - startTime;
 		
 		char buffer[80];
 		strftime(buffer, 80,"%X", gmtime(&diff));
 		playingTime = buffer;
 
-		this->playerSteps = playerSteps;
+		this->playerSteps = playerSteps;*/
 	}
 }
 
@@ -245,4 +252,9 @@ void Menu::MouseButtonUp(Mouse mouse)
 	{
 		buttons[i].MouseUp(mouse);
 	}
+}
+
+void Menu::CharEntered(char c)
+{
+
 }

@@ -39,6 +39,8 @@ public:
 
 	void NextMap();
 	bool IsFreezed();
+
+	void CharEntered(char c);
 };
 
 #endif

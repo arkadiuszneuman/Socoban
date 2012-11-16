@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "allegro5/allegro_native_dialog.h"
 #include "allegro5/allegro_image.h"
+#include "allegro5/allegro_primitives.h"
 #include "Mouse.h"
 
 Engine *Engine::eng = NULL;
@@ -83,10 +84,11 @@ void Engine::Initialize(std::string gameName)
 	}
 }
 
-void Engine::AddEvents(IGame *game, IMouseEvents *mouseEvents)
+void Engine::AddEvents(IGame *game, IMouseEvents *mouseEvents, IKeyboardEvents *keyboardEvents)
 {
 	this->game = game;
 	this->mouseEvents = mouseEvents;
+	this->keyboardEvents = keyboardEvents;
 }
 
 void Engine::ShowError(std::string message)
@@ -108,6 +110,12 @@ void Engine::DrawGameText(std::string text, int x, int y, int r, int g, int b, b
 	int flag = center ? ALLEGRO_ALIGN_CENTRE : ALLEGRO_ALIGN_LEFT;
 
 	al_draw_text(this->font, al_map_rgb(r, g, b), x, y, flag, text.c_str());
+}
+
+void Engine::DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3,
+	int r, int g, int b, float thick)
+{
+	al_draw_triangle(x1, y1, x2, y2, x3, y3, al_map_rgb(r, g, b), thick);
 }
 
 int Engine::GetDisplayWidth()
@@ -157,12 +165,17 @@ void Engine::StartGameLoop()
 		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) 
 		{
 			Key key = (Key)ev.keyboard.keycode;
-			game->KeyDownEvent(key);
+			keyboardEvents->KeyDownEvent(key);
 		}
 		else if (ev.type == ALLEGRO_EVENT_KEY_UP) 
 		{
 			Key key = (Key)ev.keyboard.keycode;
-			game->KeyUpEvent(key);
+			keyboardEvents->KeyUpEvent(key);
+		}
+		else if (ev.type == ALLEGRO_EVENT_KEY_CHAR)
+		{
+			char c = (char)ev.keyboard.unichar;
+			keyboardEvents->CharEntered(c);
 		}
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{

@@ -9,8 +9,6 @@ class IGame
 public:
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
-	virtual void KeyDownEvent(Key key) = 0;
-	virtual void KeyUpEvent(Key key) = 0;
 };
 
 #endif

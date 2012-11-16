@@ -89,6 +89,9 @@
     <ClCompile Include="Highscore.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
+    <ClCompile Include="Name.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -153,6 +156,12 @@
     </ClInclude>
     <ClInclude Include="Highscore.h">
       <Filter>Menu\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Name.h">
+      <Filter>Menu\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="IKeyboardEvents.h">
+      <Filter>Engine\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

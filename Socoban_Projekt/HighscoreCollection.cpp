@@ -53,6 +53,39 @@ bool HighscoreCollection::IsQualified(int mapNo, int steps, std::string time)
 	return false;
 }
 
+void HighscoreCollection::AddHighscore(int mapNo, std::string playerName, std::string time, int steps)
+{
+	int i;
+	for (i = 9; i >= 0; --i)
+	{
+		if (highscores[mapNo][i].Steps > steps)
+		{
+			continue;
+		}
+		else if (highscores[mapNo][i].Steps == steps)
+		{
+			if (IsFaster(time, highscores[mapNo][i].Time))
+			{
+				continue;
+			}
+		}
+
+		break;
+	}
+
+	++i;
+	for (int x = 9; x > i; --x)
+	{
+		highscores[mapNo][x] = highscores[mapNo][x - 1];
+	}
+
+	highscores[mapNo][i].PlayerName = playerName;
+	highscores[mapNo][i].Time = time;
+	highscores[mapNo][i].Steps = steps;
+
+	SaveHighscore();
+}
+
 bool HighscoreCollection::IsFaster(const string &time1, const string &time2)
 {
 	vector<string> splited1 = SplitString(time1, ':');
