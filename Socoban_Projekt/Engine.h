@@ -24,15 +24,16 @@ private:
 	IGame *game;
 	IMouseEvents *mouseEvents;
 	IKeyboardEvents *keyboardEvents;
-	ALLEGRO_FONT *font;
+	ALLEGRO_FONT *font, *monospacedFont;
 	///<summary>Zapamiêtuje wskaŸniki dla danej bitmapy - przy ponownym wczytaniu bitmapy nie bêdzie ona wczytywana ponownie, lecz zwracana z mapy</summary>
 	std::map<std::string, Bitmap*> bitmapsPointiers;
 	Engine();
 public:
 	void Initialize(std::string gameName);
 	void DrawBitmap(Bitmap *bitmap, int x, int y);
-	void DrawGameText(std::string text, int x, int y, int r, int g, int b, bool center);
-	void DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int r, int g, int b, float thick);
+	void DrawGameText(std::string text, int x, int y, int r, int g, int b, bool center, bool monospaced);
+	void DrawLine(int x1, int y1, int x2, int y2, int r, int g, int b, float thick);
+	void DrawRectangle(int x1, int y1, int x2, int y2, int r, int g, int b, float thick);
 	void StartGameLoop();
 	void ShowError(std::string message);
 	void AddEvents(IGame *game, IMouseEvents *mouseEvents, IKeyboardEvents *keyboardEvents);

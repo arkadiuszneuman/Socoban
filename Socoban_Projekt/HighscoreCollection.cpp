@@ -55,6 +55,7 @@ bool HighscoreCollection::IsQualified(int mapNo, int steps, std::string time)
 
 void HighscoreCollection::AddHighscore(int mapNo, std::string playerName, std::string time, int steps)
 {
+	--mapNo;
 	int i;
 	for (i = 9; i >= 0; --i)
 	{

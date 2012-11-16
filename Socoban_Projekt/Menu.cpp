@@ -10,15 +10,14 @@ Menu::Menu()
 	freeze = false;
 	isInGame = false;
 	playerSteps = 0;
+	this->showCaret = false;
 
 	menuBitmap = engine->GetBMP("menu/menubitmap.bmp");
 	highscoreBitmap = engine->GetBMP("menu/highscorebitmap.bmp");
 	gameBitmap = engine->GetBMP("menu/game1.bmp");
 
-	HighscoreCollection *h = new HighscoreCollection();
-	//h->IsQualified(1, 10000, "99:99:98");
-	//h->AddHighscore(1, "arek2", "99:99:98", 10000);
-	//delete h;
+	highscore = new HighscoreCollection();
+	highscoreDrawer = NULL;
 
 	CreateMainMenu();
 }
@@ -38,6 +37,17 @@ void Menu::CreateMainMenu()
 	mapToLoad = "menu";
 
 	isInGame = false;
+}
+
+void Menu::CreateHighscoreMenu()
+{
+	buttons.clear();
+
+	buttons.push_back(Button("back", Point(500, 520), this));
+
+	highscoreDrawer = new HighscoreDrawer(new Point(10, 150), 255, 255, 255, 2);
+
+	bitmap = highscoreBitmap;
 }
 
 void Menu::CreateMapsMenu()
@@ -100,6 +110,12 @@ void Menu::CreateGameWindow(std::string windowName, std::string firstBtnName, st
 
 void Menu::ButtonClicked(std::string name)
 {
+	if (highscoreDrawer != NULL)
+	{
+		delete highscoreDrawer;
+		highscoreDrawer = NULL;
+	}
+
 	if (name == "choosenmap")
 	{
 		CreateMapsMenu();
@@ -107,6 +123,10 @@ void Menu::ButtonClicked(std::string name)
 	else if (name == "back")
 	{
 		CreateMainMenu();
+	}
+	else if (name == "highscore")
+	{
+		CreateHighscoreMenu();
 	}
 	else if (name.substr(0, 9) == "map/mapno")
 	{
@@ -129,6 +149,16 @@ void Menu::ButtonClicked(std::string name)
 	{
 		std::string lvl = "lvl";
 		int lvlNo = atoi(actualMap.substr(actualMap.size() - 1, actualMap.size()).c_str());
+
+		if (showCaret) //jeœli zakoñczono dodawanie nazwy u¿ytkownika
+		{
+			showCaret = false;
+			highscore->AddHighscore(lvlNo, playerName, playingTime, playerSteps);
+
+			playerName = playingTime = "";
+			playerSteps = 0;
+		}
+
 		std::stringstream out;
 		out << lvlNo + 1;
 		lvl += out.str();
@@ -152,7 +182,18 @@ void Menu::NextMap()
 	}
 	else
 	{
-		CreateGameWindow("congratulations", "next", "endsmall");
+		std::string lvl = "lvl";
+		int lvlNo = atoi(actualMap.substr(actualMap.size() - 1, actualMap.size()).c_str());
+
+		if (!showCaret && highscore->IsQualified(lvlNo, playerSteps, playingTime))
+		{
+			showCaret = true;
+			CreateGameWindow("highscore", "next", "");
+		}
+		else
+		{
+			CreateGameWindow("congratulations", "next", "endsmall");
+		}
 	}
 }
 
@@ -181,6 +222,18 @@ void Menu::Draw()
 		windowBitmap->Draw((engine->GetDisplayWidth() / 2) - (windowBitmap->GetWidth() / 2),
 			(engine->GetDisplayHeight() / 2) - (windowBitmap->GetHeight() / 2));
 	}
+
+	if (showCaret)
+	{
+		engine->DrawGameText(playerName, 320, 288, 50, 50, 50, false, true);
+		engine->DrawLine(320 + (playerName.length() * 9), 290, 
+			320 + (playerName.length() * 9), 305, 0, 0, 0, 2);
+	}
+
+	if (highscoreDrawer != NULL)
+	{
+		highscoreDrawer->Draw(highscore);
+	}
 	
 	if (isInGame)
 	{
@@ -200,33 +253,33 @@ void Menu::DrawGameText()
 	int b = 0;
 
 	engine->DrawGameText("Kroki:", engine->GetDisplayWidth() - (bitmap->GetWidth() / 2),
-			engine->GetDisplayHeight() - 200, r, g, b, true);
+			engine->GetDisplayHeight() - 200, r, g, b, true, false);
 
 	std::ostringstream ss;
 	ss << playerSteps;
 
 	engine->DrawGameText(ss.str(), engine->GetDisplayWidth() - (bitmap->GetWidth() / 2),
-		engine->GetDisplayHeight() - 175, r, g, b, true);
+		engine->GetDisplayHeight() - 175, r, g, b, true, false);
 
 	engine->DrawGameText("Czas:", engine->GetDisplayWidth() - (bitmap->GetWidth() / 2),
-		engine->GetDisplayHeight() - 125, r, g, b, true);
+		engine->GetDisplayHeight() - 125, r, g, b, true, false);
 
 	engine->DrawGameText(playingTime, engine->GetDisplayWidth() - (bitmap->GetWidth() / 2),
-		engine->GetDisplayHeight() - 100, r, g, b, true);
+		engine->GetDisplayHeight() - 100, r, g, b, true, false);
 }
 
 void Menu::Update(int playerSteps)
 {
-	if (isInGame)
+	if (isInGame && !this->showCaret)
 	{
-		/*time_t endTime = time(NULL);
+		time_t endTime = time(NULL);
 		time_t diff = endTime - startTime;
 		
 		char buffer[80];
 		strftime(buffer, 80,"%X", gmtime(&diff));
 		playingTime = buffer;
 
-		this->playerSteps = playerSteps;*/
+		this->playerSteps = playerSteps;
 	}
 }
 
@@ -256,5 +309,27 @@ void Menu::MouseButtonUp(Mouse mouse)
 
 void Menu::CharEntered(char c)
 {
+	if (showCaret)
+	{
+		if (playerName.length() < 15)
+		{
+			if (c >= 32 && c <= 126)
+			{
+				playerName += c;
+			}
+		}
+		
+		if (c == 8 && playerName.length() > 0) //backspace
+		{
+			playerName = playerName.substr(0, playerName.length() - 1);
+		}
+	}
+}
 
+Menu::~Menu()
+{
+	if (this->highscoreDrawer != NULL)
+	{
+		delete this->highscoreDrawer;
+	}
 }

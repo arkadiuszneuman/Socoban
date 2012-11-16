@@ -47,11 +47,19 @@ void Engine::Initialize(std::string gameName)
 			return;
 		}
 
+		al_init_primitives_addon();
 		al_init_font_addon();
 		al_init_ttf_addon();
 
 		font = al_load_ttf_font("tahoma.ttf", 20, 0);
 		if (!font) 
+		{
+			ShowError("Blad podczas inicjalizacji czcionki.");
+			return;
+		}
+
+		monospacedFont = al_load_ttf_font("courier.ttf", 15, 0);
+		if (!monospacedFont) 
 		{
 			ShowError("Blad podczas inicjalizacji czcionki.");
 			return;
@@ -105,17 +113,23 @@ void Engine::DrawBitmap(Bitmap *bitmap, int x, int y)
 	bitmap->Draw(x, y);
 }
 
-void Engine::DrawGameText(std::string text, int x, int y, int r, int g, int b, bool center)
+void Engine::DrawGameText(std::string text, int x, int y, int r, int g, int b, bool center, bool monospaced)
 {
 	int flag = center ? ALLEGRO_ALIGN_CENTRE : ALLEGRO_ALIGN_LEFT;
+	ALLEGRO_FONT *f = monospaced ? monospacedFont : font;
 
-	al_draw_text(this->font, al_map_rgb(r, g, b), x, y, flag, text.c_str());
+	al_draw_text(f, al_map_rgb(r, g, b), x, y, flag, text.c_str());
 }
 
-void Engine::DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3,
-	int r, int g, int b, float thick)
+void Engine::DrawLine(int x1, int y1, int x2, int y2, int r, int g, int b, float thick)
 {
-	al_draw_triangle(x1, y1, x2, y2, x3, y3, al_map_rgb(r, g, b), thick);
+	al_draw_line(x1, y1, x2, y2, al_map_rgb(r, g, b), thick);
+	
+}
+
+void Engine::DrawRectangle(int x1, int y1, int x2, int y2, int r, int g, int b, float thick)
+{
+	al_draw_rectangle(x1, y1, x2, y2, al_map_rgb(r, g, b), thick);
 }
 
 int Engine::GetDisplayWidth()
@@ -245,6 +259,7 @@ void Engine::Exit()
 	al_destroy_display(display);
 	al_destroy_event_queue(eventQueue);
 	al_destroy_font(font);
+	al_destroy_font(monospacedFont);
 
 	DisposeBitmaps();
 
