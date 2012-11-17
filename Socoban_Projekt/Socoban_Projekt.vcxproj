@@ -73,6 +73,7 @@
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Convert.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -92,6 +93,7 @@
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Convert.h" />
     <ClInclude Include="Highscore.h" />
     <ClInclude Include="HighscoreCollection.h" />
     <ClInclude Include="IButtonClickedEvent.h" />

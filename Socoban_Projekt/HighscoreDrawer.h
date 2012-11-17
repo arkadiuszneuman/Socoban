@@ -10,11 +10,13 @@ class HighscoreDrawer
 {
 private:
 	Engine *engine;
-	int r,g,b;
+	int r,g,b, actualMap;
 	float thick;
-	Point *location;
+	Point location;
+
+	void DrawPlayers(HighscoreCollection *highscore);
 public:
-	HighscoreDrawer(Point *location, int r, int g, int b, float thick);
+	HighscoreDrawer(Point &location, int r, int g, int b, float thick);
 	~HighscoreDrawer();
 	void Draw(HighscoreCollection *highscore);
 };

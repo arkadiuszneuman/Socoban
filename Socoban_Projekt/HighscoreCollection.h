@@ -21,6 +21,7 @@ public:
 	HighscoreCollection();
 	bool IsQualified(int mapNo, int steps, std::string time);
 	void AddHighscore(int mapNo, std::string playerName, std::string time, int steps);
+	Highscore GetHighscore(int mapNo, int position);
 };
 
 #endif

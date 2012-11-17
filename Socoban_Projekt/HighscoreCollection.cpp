@@ -129,6 +129,11 @@ bool HighscoreCollection::IsFaster(const string &time1, const string &time2)
 	return false;
 }
 
+Highscore HighscoreCollection::GetHighscore(int mapNo, int position)
+{
+	return highscores[mapNo][position];
+}
+
 vector<string> HighscoreCollection::SplitString(const string &s, char delim) 
 {
 	std::vector<string> elems;

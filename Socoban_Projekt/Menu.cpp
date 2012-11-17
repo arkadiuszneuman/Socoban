@@ -45,7 +45,7 @@ void Menu::CreateHighscoreMenu()
 
 	buttons.push_back(Button("back", Point(500, 520), this));
 
-	highscoreDrawer = new HighscoreDrawer(new Point(10, 150), 255, 255, 255, 2);
+	highscoreDrawer = new HighscoreDrawer(Point(10, 150), 255, 255, 255, 2);
 
 	bitmap = highscoreBitmap;
 }

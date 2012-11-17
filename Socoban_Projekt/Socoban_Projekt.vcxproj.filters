@@ -39,6 +39,12 @@
     <Filter Include="Menu\Headers">
       <UniqueIdentifier>{6f04b431-0385-4649-b0b9-6892b6f23bc2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{827ae165-1694-458a-891c-7f27da305a29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers\Header">
+      <UniqueIdentifier>{5c678cd9-1f6e-4054-9bdf-0c0e59707cb2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -91,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="HighscoreDrawer.cpp">
       <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Convert.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +171,9 @@
     </ClInclude>
     <ClInclude Include="HighscoreDrawer.h">
       <Filter>Menu\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Convert.h">
+      <Filter>Helpers\Header</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
