@@ -19,6 +19,8 @@ public:
 	HighscoreDrawer(Point &location, int r, int g, int b, float thick);
 	~HighscoreDrawer();
 	void Draw(HighscoreCollection *highscore);
+	void NextHighscore();
+	void PrevHighscore();
 };
 
 #endif

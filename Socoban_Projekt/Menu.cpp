@@ -43,6 +43,9 @@ void Menu::CreateHighscoreMenu()
 {
 	buttons.clear();
 
+	buttons.push_back(Button("nexthigh", Point(345, 110), this));
+	buttons.push_back(Button("prevhigh", Point(10, 110), this));
+
 	buttons.push_back(Button("back", Point(500, 520), this));
 
 	highscoreDrawer = new HighscoreDrawer(Point(10, 150), 255, 255, 255, 2);
@@ -110,7 +113,8 @@ void Menu::CreateGameWindow(std::string windowName, std::string firstBtnName, st
 
 void Menu::ButtonClicked(std::string name)
 {
-	if (highscoreDrawer != NULL)
+	if (highscoreDrawer != NULL
+		&& name != "nexthigh" && name != "prevhigh")
 	{
 		delete highscoreDrawer;
 		highscoreDrawer = NULL;
@@ -127,6 +131,16 @@ void Menu::ButtonClicked(std::string name)
 	else if (name == "highscore")
 	{
 		CreateHighscoreMenu();
+	}
+	else if (name == "nexthigh")
+	{
+		if (highscoreDrawer != NULL)
+			highscoreDrawer->NextHighscore();
+	}
+	else if (name == "prevhigh")
+	{
+		if (highscoreDrawer != NULL)
+			highscoreDrawer->PrevHighscore();
 	}
 	else if (name.substr(0, 9) == "map/mapno")
 	{

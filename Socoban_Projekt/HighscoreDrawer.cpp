@@ -37,6 +37,8 @@ void HighscoreDrawer::Draw(HighscoreCollection *highscore)
 	engine->DrawGameText("Kroki", location.GetX() + 300, location.GetY() + 3, r, g, b, false, false);
 
 	DrawPlayers(highscore);
+
+	engine->DrawGameText("Plansza: " + Convert::ToString(actualMap + 1), (location.GetX() + 365) / 2, location.GetY() - 40, r, g, b, true, false);
 }
 
 void HighscoreDrawer::DrawPlayers(HighscoreCollection *highscore)
@@ -52,7 +54,19 @@ void HighscoreDrawer::DrawPlayers(HighscoreCollection *highscore)
 	}
 }
 
+void HighscoreDrawer::NextHighscore()
+{
+	if (actualMap < 9)
+		++actualMap;
+}
+
+void HighscoreDrawer::PrevHighscore()
+{
+	if (actualMap > 0)
+		--actualMap;
+}
+
 HighscoreDrawer::~HighscoreDrawer()
 {
-	//delete location;
+	
 }
