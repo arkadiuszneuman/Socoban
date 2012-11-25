@@ -1,18 +1,13 @@
 #include "Button.h"
 #include "BaseObject.h"
-#include <sstream>
+#include "Convert.h"
 
 Button::Button(std::string name, Point &location, IButtonClickedEvent *buttonClickedEvent)
 	: BaseObject(location)
 {
 	for (int i = 0; i < 3; ++i)
 	{
-		std::stringstream out;
-		out << i+1;
-		std::string path = "Menu/" + name;
-		path += out.str();
-		path += ".bmp";
-		
+		std::string path = "Menu/" + name + Convert::ToString(i + 1) + ".bmp";
 		bitmaps[i] = engine->GetBMP(path);
 	}
 

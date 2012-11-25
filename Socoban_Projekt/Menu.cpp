@@ -1,5 +1,5 @@
 #include "Menu.h"
-#include <sstream>
+#include "Convert.h"
 
 Menu::Menu()
 {
@@ -72,6 +72,17 @@ void Menu::CreateMapsMenu()
 	buttons.push_back(Button("usermap", Point(280, 450), this));
 
 	bitmap = menuBitmap;
+	windowBitmap = NULL;
+}
+
+void Menu::CreateEditorMenu()
+{
+	buttons.clear();
+
+	buttons.push_back(Button("restart", Point(engine->GetDisplayWidth() - 120, 30), this));
+	buttons.push_back(Button("close", Point(engine->GetDisplayWidth() - 120, 70), this));
+
+	bitmap = gameBitmap;
 	windowBitmap = NULL;
 }
 
@@ -161,8 +172,7 @@ void Menu::ButtonClicked(std::string name)
 	}
 	else if (name == "windows/next")
 	{
-		std::string lvl = "lvl";
-		int lvlNo = atoi(actualMap.substr(actualMap.size() - 1, actualMap.size()).c_str());
+		int lvlNo = Convert::ToInt(actualMap.substr(actualMap.size() - 1, actualMap.size()).c_str());
 
 		if (showCaret) //jeœli zakoñczono dodawanie nazwy u¿ytkownika
 		{
@@ -173,16 +183,16 @@ void Menu::ButtonClicked(std::string name)
 			playerSteps = 0;
 		}
 
-		std::stringstream out;
-		out << lvlNo + 1;
-		lvl += out.str();
-
 		freeze = false;
-		CreateGameMenu(lvl);	
+		CreateGameMenu("lvl" + Convert::ToString(lvlNo + 1));	
 	}
 	else if (name == "end")
 	{
 		engine->endGameLoop = true;
+	}
+	else if (name == "editor")
+	{
+		CreateEditorMenu();
 	}
 }
 
@@ -269,10 +279,7 @@ void Menu::DrawGameText()
 	engine->DrawGameText("Kroki:", engine->GetDisplayWidth() - (bitmap->GetWidth() / 2),
 			engine->GetDisplayHeight() - 200, r, g, b, true, false);
 
-	std::ostringstream ss;
-	ss << playerSteps;
-
-	engine->DrawGameText(ss.str(), engine->GetDisplayWidth() - (bitmap->GetWidth() / 2),
+	engine->DrawGameText(Convert::ToString(playerSteps), engine->GetDisplayWidth() - (bitmap->GetWidth() / 2),
 		engine->GetDisplayHeight() - 175, r, g, b, true, false);
 
 	engine->DrawGameText("Czas:", engine->GetDisplayWidth() - (bitmap->GetWidth() / 2),

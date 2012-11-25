@@ -1,5 +1,6 @@
 #include "HighscoreCollection.h"
 #include <fstream>
+#include "Convert.h"
 #include <sstream>
 
 using namespace std;
@@ -94,18 +95,12 @@ bool HighscoreCollection::IsFaster(const string &time1, const string &time2)
 
 	int time1h, time1m, time1s, time2h, time2m, time2s;
 
-	istringstream iss1(splited1[0]);
-	iss1 >> time1h;
-	istringstream iss2(splited1[1]);
-	iss2 >> time1m;
-	istringstream iss3(splited1[2]);
-	iss3 >> time1s;
-	istringstream iss4(splited2[0]);
-	iss4 >> time2h;
-	istringstream iss5(splited2[1]);
-	iss5 >> time2m;
-	istringstream iss6(splited2[2]);
-	iss6 >> time2s;
+	time1h = Convert::ToInt(splited1[0]);
+	time1m = Convert::ToInt(splited1[1]);
+	time1s = Convert::ToInt(splited1[2]);
+	time2h = Convert::ToInt(splited1[0]);
+	time2m = Convert::ToInt(splited1[1]);
+	time2s = Convert::ToInt(splited1[2]);
 
 	if (time1h < time2h)
 	{

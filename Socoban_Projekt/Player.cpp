@@ -1,5 +1,5 @@
 #include "Player.h"
-#include <sstream>
+#include "Convert.h"
 
 Player::Player(Point &location)
 	: MovableObject(location)
@@ -39,10 +39,7 @@ void Player::LoadEndBitmaps()
 {
 	for (int i = 0; i < 9; ++i)
 	{
-		std::stringstream out;
-		out << i+1;
-
-		std::string path = "player/end/" + out.str() + ".bmp";
+		std::string path = "player/end/" + Convert::ToString(i + 1) + ".bmp";
 		animEnd.push_back(engine->GetBMP(path));
 	}
 }
