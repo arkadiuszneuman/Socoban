@@ -11,6 +11,7 @@ Menu::Menu()
 	isInGame = false;
 	playerSteps = 0;
 	this->showCaret = false;
+	this->IsInEditor = false;
 
 	menuBitmap = engine->GetBMP("menu/menubitmap.bmp");
 	highscoreBitmap = engine->GetBMP("menu/highscorebitmap.bmp");
@@ -26,11 +27,11 @@ void Menu::CreateMainMenu()
 {
 	buttons.clear();
 
-	buttons.push_back(Button("newgame", Point(276, 250), this));
-	buttons.push_back(Button("choosenmap", Point(276, 290), this));
-	buttons.push_back(Button("highscore", Point(276, 330), this));
-	buttons.push_back(Button("editor", Point(276, 370), this));
-	buttons.push_back(Button("end", Point(276, 450), this));
+	buttons.push_back(Button("newgame", Point(276, 250), this, true));
+	buttons.push_back(Button("choosenmap", Point(276, 290), this, true));
+	buttons.push_back(Button("highscore", Point(276, 330), this, true));
+	buttons.push_back(Button("editor", Point(276, 370), this, true));
+	buttons.push_back(Button("end", Point(276, 450), this, true));
 
 	bitmap = menuBitmap;
 	windowBitmap = NULL;
@@ -43,10 +44,10 @@ void Menu::CreateHighscoreMenu()
 {
 	buttons.clear();
 
-	buttons.push_back(Button("nexthigh", Point(345, 110), this));
-	buttons.push_back(Button("prevhigh", Point(10, 110), this));
+	buttons.push_back(Button("nexthigh", Point(345, 110), this, true));
+	buttons.push_back(Button("prevhigh", Point(10, 110), this, true));
 
-	buttons.push_back(Button("back", Point(500, 520), this));
+	buttons.push_back(Button("back", Point(500, 520), this, true));
 
 	highscoreDrawer = new HighscoreDrawer(Point(10, 150), 255, 255, 255, 2);
 
@@ -57,32 +58,21 @@ void Menu::CreateMapsMenu()
 {
 	buttons.clear();
 
-	buttons.push_back(Button("map/mapno1", Point(130, 200), this));
-	buttons.push_back(Button("map/mapno2", Point(130, 250), this));
-	buttons.push_back(Button("map/mapno3", Point(130, 300), this));
-	buttons.push_back(Button("map/mapno4", Point(130, 350), this));
-	buttons.push_back(Button("map/mapno5", Point(130, 400), this));
-	buttons.push_back(Button("map/mapno6", Point(430, 200), this));
-	buttons.push_back(Button("map/mapno7", Point(430, 250), this));
-	buttons.push_back(Button("map/mapno8", Point(430, 300), this));
-	buttons.push_back(Button("map/mapno9", Point(430, 350), this));
-	buttons.push_back(Button("map/mapno10", Point(430, 400), this));
+	buttons.push_back(Button("map/mapno1", Point(130, 200), this, true));
+	buttons.push_back(Button("map/mapno2", Point(130, 250), this, true));
+	buttons.push_back(Button("map/mapno3", Point(130, 300), this, true));
+	buttons.push_back(Button("map/mapno4", Point(130, 350), this, true));
+	buttons.push_back(Button("map/mapno5", Point(130, 400), this, true));
+	buttons.push_back(Button("map/mapno6", Point(430, 200), this, true));
+	buttons.push_back(Button("map/mapno7", Point(430, 250), this, true));
+	buttons.push_back(Button("map/mapno8", Point(430, 300), this, true));
+	buttons.push_back(Button("map/mapno9", Point(430, 350), this, true));
+	buttons.push_back(Button("map/mapno10", Point(430, 400), this, true));
 
-	buttons.push_back(Button("back", Point(500, 520), this));
-	buttons.push_back(Button("usermap", Point(280, 450), this));
+	buttons.push_back(Button("back", Point(500, 520), this, true));
+	buttons.push_back(Button("usermap", Point(280, 450), this, true));
 
 	bitmap = menuBitmap;
-	windowBitmap = NULL;
-}
-
-void Menu::CreateEditorMenu()
-{
-	buttons.clear();
-
-	buttons.push_back(Button("restart", Point(engine->GetDisplayWidth() - 120, 30), this));
-	buttons.push_back(Button("close", Point(engine->GetDisplayWidth() - 120, 70), this));
-
-	bitmap = gameBitmap;
 	windowBitmap = NULL;
 }
 
@@ -90,8 +80,8 @@ void Menu::CreateGameMenu(std::string levelName)
 {
 	buttons.clear();
 
-	buttons.push_back(Button("restart", Point(engine->GetDisplayWidth() - 120, 30), this));
-	buttons.push_back(Button("close", Point(engine->GetDisplayWidth() - 120, 70), this));
+	buttons.push_back(Button("restart", Point(engine->GetDisplayWidth() - 120, 30), this, true));
+	buttons.push_back(Button("close", Point(engine->GetDisplayWidth() - 120, 70), this, true));
 
 	actualMap = levelName;
 	mapToLoad = levelName;
@@ -113,12 +103,12 @@ void Menu::CreateGameWindow(std::string windowName, std::string firstBtnName, st
 	if (firstBtnName.length() > 0)
 	{
 		buttons.push_back(Button("windows/" + firstBtnName, Point(bitmapLocation.GetX() + 20, 
-			bitmapLocation.GetY() + this->windowBitmap->GetHeight() - 30), this));
+			bitmapLocation.GetY() + this->windowBitmap->GetHeight() - 30), this, true));
 	}
 	if (secondBtnName.length() > 0)
 	{
 		buttons.push_back(Button("windows/" + secondBtnName, Point(bitmapLocation.GetX() + this->windowBitmap->GetWidth() - 80, 
-			bitmapLocation.GetY() + this->windowBitmap->GetHeight() - 30), this));
+			bitmapLocation.GetY() + this->windowBitmap->GetHeight() - 30), this, true));
 	}
 }
 
@@ -192,7 +182,7 @@ void Menu::ButtonClicked(std::string name)
 	}
 	else if (name == "editor")
 	{
-		CreateEditorMenu();
+		this->IsInEditor = true;
 	}
 }
 

@@ -8,6 +8,7 @@
 #include "IMouseEvents.h"
 #include "IKeyboardEvents.h"
 #include "Bitmap.h"
+#include <vector>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
@@ -22,7 +23,7 @@ private:
 	ALLEGRO_EVENT_QUEUE *eventQueue;
 	ALLEGRO_TIMER *timer;
 	IGame *game;
-	IMouseEvents *mouseEvents;
+	std::vector<IMouseEvents *> mouseEvents;
 	IKeyboardEvents *keyboardEvents;
 	ALLEGRO_FONT *font, *monospacedFont;
 	///<summary>Zapamiêtuje wskaŸniki dla danej bitmapy - przy ponownym wczytaniu bitmapy nie bêdzie ona wczytywana ponownie, lecz zwracana z mapy</summary>
@@ -36,7 +37,8 @@ public:
 	void DrawRectangle(int x1, int y1, int x2, int y2, int r, int g, int b, float thick);
 	void StartGameLoop();
 	void ShowError(std::string message);
-	void AddEvents(IGame *game, IMouseEvents *mouseEvents, IKeyboardEvents *keyboardEvents);
+	void AddEvents(IGame *game, IKeyboardEvents *keyboardEvents);
+	void AddMouseEvent(IMouseEvents *mouseEvents);
 	int GetDisplayWidth();
 	int GetDisplayHeight();
 	///<summary>Usuwa wszelkie bitmapy z pamiêci</summary>

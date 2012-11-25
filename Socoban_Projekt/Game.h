@@ -5,12 +5,14 @@
 #include "IGame.h"
 #include "Map.h"
 #include "Menu.h"
+#include "Editor.h"
 
 class Game : public IKeyboardEvents, public IGame
 {
 private:
 	Map *map;
 	Menu *menu;
+	Editor *editor;
 public:
 	void Start();
 	void Draw();

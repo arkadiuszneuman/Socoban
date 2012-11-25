@@ -3,5 +3,5 @@
 Wall::Wall(Point &location)
 	: BaseObject(location)
 {
-	bitmap = engine->GetBMP("wall.bmp");
+	bitmap = engine->GetBMP("menu//wall.bmp");
 }

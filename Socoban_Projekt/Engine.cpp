@@ -92,11 +92,16 @@ void Engine::Initialize(std::string gameName)
 	}
 }
 
-void Engine::AddEvents(IGame *game, IMouseEvents *mouseEvents, IKeyboardEvents *keyboardEvents)
+void Engine::AddEvents(IGame *game, IKeyboardEvents *keyboardEvents)
 {
 	this->game = game;
 	this->mouseEvents = mouseEvents;
 	this->keyboardEvents = keyboardEvents;
+}
+
+void Engine::AddMouseEvent(IMouseEvents *mouseEvent)
+{
+	mouseEvents.push_back(mouseEvent);
 }
 
 void Engine::ShowError(std::string message)
@@ -202,7 +207,10 @@ void Engine::StartGameLoop()
 			mouse.y = ev.mouse.y;
 			mouse.button = ev.mouse.button;
 
-			mouseEvents->MouseMove(mouse);
+			for (int i = 0; i < mouseEvents.size(); ++i)
+			{
+				mouseEvents[i]->MouseMove(mouse);
+			}
 		}
 		else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
 		{
@@ -210,7 +218,10 @@ void Engine::StartGameLoop()
 			mouse.y = ev.mouse.y;
 			mouse.button = ev.mouse.button;
 
-			mouseEvents->MouseButtonUp(mouse);
+			for (int i = 0; i < mouseEvents.size(); ++i)
+			{
+				mouseEvents[i]->MouseButtonUp(mouse);
+			}
 		}
 		else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
 		{
@@ -218,7 +229,10 @@ void Engine::StartGameLoop()
 			mouse.y = ev.mouse.y;
 			mouse.button = ev.mouse.button;
 
-			mouseEvents->MouseButtonDown(mouse);
+			for (int i = 0; i < mouseEvents.size(); ++i)
+			{
+				mouseEvents[i]->MouseButtonDown(mouse);
+			}
 		}
  
 		if(redraw && al_is_event_queue_empty(eventQueue))

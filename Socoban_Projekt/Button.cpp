@@ -2,19 +2,31 @@
 #include "BaseObject.h"
 #include "Convert.h"
 
-Button::Button(std::string name, Point &location, IButtonClickedEvent *buttonClickedEvent)
+Button::Button(std::string name, Point &location, IButtonClickedEvent *buttonClickedEvent, bool threeState)
 	: BaseObject(location)
 {
-	for (int i = 0; i < 3; ++i)
+	if (threeState)
 	{
-		std::string path = "Menu/" + name + Convert::ToString(i + 1) + ".bmp";
-		bitmaps[i] = engine->GetBMP(path);
+		for (int i = 0; i < 3; ++i)
+		{
+			std::string path = "Menu/" + name + Convert::ToString(i + 1) + ".bmp";
+			bitmaps[i] = engine->GetBMP(path);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < 3; ++i)
+		{
+			std::string path = "Menu/" + name + ".bmp";
+			bitmaps[i] = engine->GetBMP(path);
+		}
 	}
 
 	bitmap = bitmaps[0];
 	this->isMouseDown = false;
 	this->name = name;
 	this->buttonClickedEvent = buttonClickedEvent;
+	this->threeState = threeState;
 }
 
 bool Button::IsMouseOver(Mouse mouse)

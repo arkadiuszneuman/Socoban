@@ -45,6 +45,12 @@
     <Filter Include="Helpers\Header">
       <UniqueIdentifier>{5c678cd9-1f6e-4054-9bdf-0c0e59707cb2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor">
+      <UniqueIdentifier>{e8dc3453-b1ce-4441-8de8-4f83ca11a348}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Headers">
+      <UniqueIdentifier>{b49f3f01-f110-43f1-a265-c6f3b96e57ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -101,6 +107,9 @@
     <ClCompile Include="Convert.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -135,9 +144,6 @@
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Map\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectType.h">
-      <Filter>Objects\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Wall.h">
       <Filter>Objects\Headers</Filter>
@@ -174,6 +180,12 @@
     </ClInclude>
     <ClInclude Include="Convert.h">
       <Filter>Helpers\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>Editor\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectType.h">
+      <Filter>Editor\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

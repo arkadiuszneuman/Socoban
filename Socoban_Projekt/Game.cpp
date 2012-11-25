@@ -6,8 +6,11 @@ void Game::Start()
 
 	menu = new Menu();
 	map = new Map();
+	editor = new Editor();
 
-	Engine::GetInstance()->AddEvents(this, menu, this);
+	Engine::GetInstance()->AddEvents(this, this);
+	Engine::GetInstance()->AddMouseEvent(menu);
+	Engine::GetInstance()->AddMouseEvent(editor);
 
 	Engine::GetInstance()->StartGameLoop();
 
@@ -20,29 +23,47 @@ void Game::Start()
 void Game::Draw()
 {
 	map->DrawObjects();
-	menu->Draw();
+
+	if (!menu->IsInEditor)
+	{
+		menu->Draw();
+	}
+	else
+	{
+		editor->Draw();
+	}
 }
 
 void Game::Update()
 {
 	if (!menu->IsFreezed())
 	{
-		std::string level = menu->GetMap();
-		if (level != "")
+		if (!menu->IsInEditor)
 		{
-			map->Dispose();
-			if (level != "menu")
+			std::string level = menu->GetMap();
+			if (level != "")
 			{
-				map->LoadMap(level);
+				map->Dispose();
+				if (level != "menu")
+				{
+					map->LoadMap(level);
+				}
+			}
+
+			if (map->UpdateObjects())
+			{
+				menu->NextMap();
+			}
+
+			menu->Update(map->GetPlayerSteps());
+		}
+		else
+		{
+			if (editor->IsEnded())
+			{
+				menu->IsInEditor = false;
 			}
 		}
-
-		if (map->UpdateObjects())
-		{
-			menu->NextMap();
-		}
-
-		menu->Update(map->GetPlayerSteps());
 	}
 }
 

@@ -13,9 +13,10 @@ private:
 	IButtonClickedEvent *buttonClickedEvent;
 	bool IsMouseOver(Mouse mouse);
 	bool isMouseDown;
+	bool threeState;
 	std::string name;
 public:
-	Button(std::string name, Point &location, IButtonClickedEvent *buttonClickedEvent);
+	Button(std::string name, Point &location, IButtonClickedEvent *buttonClickedEvent, bool threeState);
 	void MouseMove(Mouse mouse);
 	void MouseDown(Mouse mouse);
 	void MouseUp(Mouse mouse);

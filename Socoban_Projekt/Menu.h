@@ -16,7 +16,6 @@ private:
 	void CreateMapsMenu();
 	void CreateHighscoreMenu();
 	void CreateGameMenu(std::string levelName);
-	void CreateEditorMenu();
 	void CreateGameWindow(std::string windowName, std::string firstBtnName, std::string secondBtnName);
 	void ButtonClicked(std::string name);
 	void DrawGameText();
@@ -32,6 +31,8 @@ private:
 	HighscoreCollection *highscore;
 	HighscoreDrawer *highscoreDrawer;
 public:
+	bool IsInEditor;
+
 	Menu();
 	~Menu();
 
