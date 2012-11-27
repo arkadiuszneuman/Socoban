@@ -3,13 +3,13 @@
 
 enum ObjectType
 {
-	Empty = 0,
-	Wall = 1,
-	Box = 2,
-	Destination = 3,
-	Floor = 4,
-	Player = 5,
-	Other = 6
+	EEmpty = 0,
+	EWall = 1,
+	EBox = 2,
+	EDestination = 3,
+	EFloor = 4,
+	EPlayer = 5,
+	EOther = 6
 };
 
 #endif

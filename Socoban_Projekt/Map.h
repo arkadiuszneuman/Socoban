@@ -16,6 +16,8 @@ private:
 	Player *player;
 	
 	void CreateObjects(unsigned short map[22][20]);
+	std::vector<unsigned short> CreateArray(std::vector<Floor*> floors, std::vector<Floor*> destinations, 
+		std::vector<Box*> boxes, std::vector<Wall*> walls, Player *player);
 public:
 	Map();
 	~Map();
@@ -25,6 +27,8 @@ public:
 	void KeyPressed(Key key);
 	void KeyReleased(Key key);
 	void LoadMap(std::string mapName);
+	void SaveMap(std::string mapName, std::vector<Floor*> floors, std::vector<Floor*> destinations, 
+		std::vector<Box*> boxes, std::vector<Wall*> walls, Player *player);
 	int GetPlayerSteps();
 };
 
