@@ -27,6 +27,7 @@ Button::Button(std::string name, Point &location, IButtonClickedEvent *buttonCli
 	this->name = name;
 	this->buttonClickedEvent = buttonClickedEvent;
 	this->threeState = threeState;
+	Engine::GetInstance()->AddMouseEvent(this);
 }
 
 bool Button::IsMouseOver(Mouse mouse)
@@ -57,7 +58,7 @@ void Button::MouseMove(Mouse mouse)
 	}
 }
 
-void Button::MouseDown(Mouse mouse)
+void Button::MouseButtonDown(Mouse mouse)
 {
 	if (IsMouseOver(mouse))
 	{
@@ -70,7 +71,7 @@ void Button::MouseDown(Mouse mouse)
 	}
 }
 
-void Button::MouseUp(Mouse mouse)
+void Button::MouseButtonUp(Mouse mouse)
 {
 	if (isMouseDown)
 	{
@@ -90,5 +91,5 @@ void Button::MouseUp(Mouse mouse)
 
 Button::~Button()
 {
-
+	Engine::GetInstance()->RemoveMouseEvent(this);
 }

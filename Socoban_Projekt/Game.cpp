@@ -6,12 +6,9 @@ void Game::Start()
 
 	menu = new Menu();
 	map = new Map();
-	editor = new Editor();
+	editor = NULL;
 
 	Engine::GetInstance()->AddEvents(this, this);
-	Engine::GetInstance()->AddMouseEvent(menu);
-	Engine::GetInstance()->AddMouseEvent(editor);
-
 	Engine::GetInstance()->StartGameLoop();
 
 	delete map;
@@ -59,9 +56,18 @@ void Game::Update()
 		}
 		else
 		{
+			if (editor == NULL)
+			{
+				editor = new Editor();
+				Engine::GetInstance()->AddMouseEvent(editor);
+			}
+
 			if (editor->IsEnded())
 			{
 				menu->IsInEditor = false;
+				Engine::GetInstance()->RemoveMouseEvent(editor);
+				delete editor;
+				editor = NULL;
 			}
 		}
 	}

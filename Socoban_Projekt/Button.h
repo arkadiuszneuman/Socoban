@@ -3,10 +3,11 @@
 
 #include "BaseObject.h"
 #include "IButtonClickedEvent.h"
+#include "IMouseEvents.h"
 #include <string>
 #include <vector>
 
-class Button : public BaseObject
+class Button : public BaseObject, public IMouseEvents
 {
 private:
 	Bitmap *bitmaps[3];
@@ -18,8 +19,8 @@ private:
 public:
 	Button(std::string name, Point &location, IButtonClickedEvent *buttonClickedEvent, bool threeState);
 	void MouseMove(Mouse mouse);
-	void MouseDown(Mouse mouse);
-	void MouseUp(Mouse mouse);
+	void MouseButtonDown(Mouse mouse);
+	void MouseButtonUp(Mouse mouse);
 	~Button();
 };
 

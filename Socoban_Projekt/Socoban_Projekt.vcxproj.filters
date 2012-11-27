@@ -110,6 +110,9 @@
     <ClCompile Include="Editor.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
+    <ClCompile Include="GameWindow.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -186,6 +189,9 @@
     </ClInclude>
     <ClInclude Include="ObjectType.h">
       <Filter>Editor\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameWindow.h">
+      <Filter>Menu\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

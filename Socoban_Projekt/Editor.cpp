@@ -9,8 +9,8 @@ Editor::Editor()
 
 	buttons.clear();
 
-	buttons.push_back(Button("save", Point(engine->GetDisplayWidth() - 120, 30), this, true));
-	buttons.push_back(Button("close", Point(engine->GetDisplayWidth() - 120, 70), this, true));
+	buttons.push_back(new Button("save", Point(engine->GetDisplayWidth() - 120, 30), this, true));
+	buttons.push_back(new Button("close", Point(engine->GetDisplayWidth() - 120, 70), this, true));
 
 	buttonsDictionary[ObjectType::EWall] = new Button("wall", Point(engine->GetDisplayWidth() - 110, 150), this, false);
 	buttonsDictionary[ObjectType::EBox] = new Button("box", Point(engine->GetDisplayWidth() - 65, 150), this, false);
@@ -84,11 +84,9 @@ void Editor::Draw()
 		it->second->Draw();
 	}
 
-	//engine->DrawRectangle(engine->GetDisplayWidth() - 82, 118, engine->GetDisplayWidth() - 66, 132, 0, 0, 0, 16);
-
 	for (int i = 0; i < buttons.size(); ++i)
 	{
-		buttons[i].Draw();
+		buttons[i]->Draw();
 	}
 
 	engine->DrawRectangle(selectedBrushLocation.GetX(), selectedBrushLocation.GetY(), selectedBrushLocation.GetX() + BaseObject::TextureSize,
@@ -209,29 +207,10 @@ void Editor::RemoveObject(int x, int y)
 
 void Editor::MouseMove(Mouse mouse)
 {
-	for(std::map<ObjectType, Button*>::iterator it = buttonsDictionary.begin(); it != buttonsDictionary.end(); ++it)
-	{
-		it->second->MouseMove(mouse);
-	}
-
-	for (int i = 0; i < buttons.size(); ++i)
-	{
-		buttons[i].MouseMove(mouse);
-	}
 }
 
 void Editor::MouseButtonDown(Mouse mouse)
 {
-	for(std::map<ObjectType, Button*>::iterator it = buttonsDictionary.begin(); it != buttonsDictionary.end(); ++it)
-	{
-		it->second->MouseDown(mouse);
-	}
-
-	for (int i = 0; i < buttons.size(); ++i)
-	{
-		buttons[i].MouseDown(mouse);
-	}
-
 	if (mouse.x > 0 && mouse.x < engine->GetDisplayWidth() - bitmap->GetWidth()
 		&& mouse.y > 0 && mouse.y < engine->GetDisplayHeight())
 	{
@@ -241,20 +220,10 @@ void Editor::MouseButtonDown(Mouse mouse)
 
 void Editor::MouseButtonUp(Mouse mouse)
 {
-	for(std::map<ObjectType, Button*>::iterator it = buttonsDictionary.begin(); it != buttonsDictionary.end(); ++it)
-	{
-		it->second->MouseUp(mouse);
-	}
-
-	for (int i = 0; i < buttons.size(); ++i)
-	{
-		buttons[i].MouseUp(mouse);
-	}
 }
 
 void Editor::CharEntered(char c)
 {
-	
 }
 
 Editor::~Editor()
@@ -262,6 +231,11 @@ Editor::~Editor()
 	for(std::map<ObjectType, Button*>::iterator it = buttonsDictionary.begin(); it != buttonsDictionary.end(); ++it)
 	{
 		delete it->second;
+	}
+
+	for (int x = 0; x < buttons.size(); ++x)
+	{
+		delete buttons[x];
 	}
 
 	buttonsDictionary.clear();

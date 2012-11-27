@@ -9,7 +9,7 @@
 #include <time.h>
 #include <ctime>
 
-class Menu : IButtonClickedEvent, public IMouseEvents
+class Menu : IButtonClickedEvent
 {
 private:
 	void CreateMainMenu();
@@ -19,9 +19,10 @@ private:
 	void CreateGameWindow(std::string windowName, std::string firstBtnName, std::string secondBtnName);
 	void ButtonClicked(std::string name);
 	void DrawGameText();
+	void ClearButtons();
 
 	Engine *engine;
-	std::vector<Button> buttons;
+	std::vector<Button*> buttons;
 	Bitmap *bitmap, *menuBitmap, *highscoreBitmap, *gameBitmap, *windowBitmap;
 	std::string actualMap, mapToLoad, playingTime, playerName;
 	bool freeze, isInGame;
@@ -40,10 +41,6 @@ public:
 	void Update(int playerSteps);
 
 	std::string GetMap();
-
-	void MouseMove(Mouse mouse);
-	void MouseButtonDown(Mouse mouse);
-	void MouseButtonUp(Mouse mouse);
 
 	void NextMap();
 	bool IsFreezed();

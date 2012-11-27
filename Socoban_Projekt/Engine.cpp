@@ -104,6 +104,18 @@ void Engine::AddMouseEvent(IMouseEvents *mouseEvent)
 	mouseEvents.push_back(mouseEvent);
 }
 
+void Engine::RemoveMouseEvent(IMouseEvents *mouseEvent)
+{
+	for (int i = 0; i < mouseEvents.size(); ++i)
+	{
+		if (mouseEvents[i] == mouseEvent)
+		{
+			mouseEvents.erase(mouseEvents.begin() + i);
+			break;
+		}
+	}
+}
+
 void Engine::ShowError(std::string message)
 {
 	al_show_native_message_box(al_get_current_display(), 

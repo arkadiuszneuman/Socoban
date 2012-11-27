@@ -39,6 +39,7 @@ public:
 	void ShowError(std::string message);
 	void AddEvents(IGame *game, IKeyboardEvents *keyboardEvents);
 	void AddMouseEvent(IMouseEvents *mouseEvents);
+	void RemoveMouseEvent(IMouseEvents *mouseEvents);
 	int GetDisplayWidth();
 	int GetDisplayHeight();
 	///<summary>Usuwa wszelkie bitmapy z pamiêci</summary>

@@ -22,7 +22,7 @@ private:
 
 	Engine *engine;
 	std::map<ObjectType, Button*> buttonsDictionary;
-	std::vector<Button> buttons;
+	std::vector<Button *> buttons;
 	std::vector<BaseObject*> floors, objects;
 	Player *player;
 	Bitmap *bitmap;
