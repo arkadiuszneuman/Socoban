@@ -206,10 +206,8 @@ void Menu::NextMap()
 	}
 	else
 	{
-		std::string lvl = "lvl";
-		int lvlNo = atoi(actualMap.substr(actualMap.size() - 1, actualMap.size()).c_str());
-
-		if (!showCaret && highscore->IsQualified(lvlNo, playerSteps, playingTime))
+		if (!showCaret && highscore->IsQualified(Convert::ToInt(actualMap.substr(actualMap.size() - 1, actualMap.size()).c_str())
+			, playerSteps, playingTime))
 		{
 			showCaret = true;
 			CreateGameWindow("highscore", "next", "");
@@ -239,12 +237,6 @@ void Menu::Draw()
 	{
 		engine->DrawBitmap(bitmap, engine->GetDisplayWidth() - bitmap->GetWidth(), 
 			engine->GetDisplayHeight() - bitmap->GetHeight());
-	}
-
-	if (windowBitmap != NULL)
-	{
-		windowBitmap->Draw((engine->GetDisplayWidth() / 2) - (windowBitmap->GetWidth() / 2),
-			(engine->GetDisplayHeight() / 2) - (windowBitmap->GetHeight() / 2));
 	}
 
 	if (showCaret)

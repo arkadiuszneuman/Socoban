@@ -13,9 +13,12 @@ class GameWindow
 private:
 	Bitmap *windowBitmap;
 	Engine *engine;
-	std::vector<Button> buttons;
+	std::vector<Button *> buttons;
 public:
 	GameWindow(IButtonClickedEvent *btnClickedEvent, std::string windowName, std::string firstBtnName, std::string secondBtnName);
+	~GameWindow();
+
+	void Draw();
 };
 
 #endif
