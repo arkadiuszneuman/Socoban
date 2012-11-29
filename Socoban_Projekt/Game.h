@@ -7,7 +7,7 @@
 #include "Menu.h"
 #include "Editor.h"
 
-class Game : public IKeyboardEvents, public IGame
+class Game : public IGame
 {
 private:
 	Map *map;
@@ -17,10 +17,6 @@ public:
 	void Start();
 	void Draw();
 	void Update();
-	void KeyDownEvent(Key key);
-	void KeyUpEvent(Key key);
-
-	void CharEntered(char c);
 };
 
 #endif

@@ -10,6 +10,7 @@ private:
 	bool endPoint;
 public:
 	Floor(Point &location, bool endPoint);
+	bool IsEndpoint();
 };
 
 #endif

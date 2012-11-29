@@ -3,6 +3,8 @@
 #include "Wall.h"
 #include "Floor.h"
 #include "Box.h"
+#include <sstream>
+#include <fstream>
 
 Map::Map()
 {
@@ -65,7 +67,11 @@ void Map::SaveMap(std::string mapName, std::vector<Floor*> floors, std::vector<F
 	path += mapName;
 	path += ".soc";
 
-	FILE *file = fopen(path.c_str(), "wb");
+	std::fstream file(path, std::ios::out | std::ios::binary);
+	file.write((char*)&map, sizeof(map));
+	file.close();
+
+	/*FILE *file = fopen(path.c_str(), "wb");
 	if(file == NULL) 
 	{
 		fwrite(map, sizeof(unsigned short), sizeof(map)/sizeof(unsigned short), file);
@@ -75,7 +81,7 @@ void Map::SaveMap(std::string mapName, std::vector<Floor*> floors, std::vector<F
 	{
 		Engine::GetInstance()->ShowError("Podana mapa juz istnieje.");
 		return;
-	}
+	}*/
 }
 
 std::vector<unsigned short> Map::CreateArray(std::vector<Floor*> floors, std::vector<Floor*> destinations, 
@@ -244,23 +250,6 @@ bool Map::UpdateObjects()
 
 	return false;
 }
-
-void Map::KeyPressed(Key key)
-{
-	if (player != NULL)
-	{
-		player->KeyPressed(key);
-	}
-}
-
-void Map::KeyReleased(Key key)
-{
-	if (player != NULL)
-	{
-		player->KeyReleased(key);
-	}
-}
-
 
 int Map::GetPlayerSteps()
 {

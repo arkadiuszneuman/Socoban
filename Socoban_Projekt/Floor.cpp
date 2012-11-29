@@ -6,3 +6,8 @@ Floor::Floor(Point &location, bool endPoint)
 	bitmap = endPoint ? engine->GetBMP("menu//destination.bmp") : engine->GetBMP("menu//floor.bmp");
 	this->endPoint = endPoint;
 }
+
+bool Floor::IsEndpoint()
+{
+	return this->endPoint;
+}

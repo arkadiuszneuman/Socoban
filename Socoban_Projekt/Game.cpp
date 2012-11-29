@@ -8,7 +8,7 @@ void Game::Start()
 	map = new Map();
 	editor = NULL;
 
-	Engine::GetInstance()->AddEvents(this, this);
+	Engine::GetInstance()->AddEvents(this);
 	Engine::GetInstance()->StartGameLoop();
 
 	delete map;
@@ -58,7 +58,7 @@ void Game::Update()
 		{
 			if (editor == NULL)
 			{
-				editor = new Editor();
+				editor = new Editor(map);
 				Engine::GetInstance()->AddMouseEvent(editor);
 			}
 
@@ -71,19 +71,4 @@ void Game::Update()
 			}
 		}
 	}
-}
-
-void Game::KeyDownEvent(Key key)
-{
-	map->KeyPressed(key);
-}
-
-void Game::KeyUpEvent(Key key)
-{
-	map->KeyReleased(key);
-}
-
-void Game::CharEntered(char c)
-{
-	menu->CharEntered(c);
 }

@@ -24,7 +24,7 @@ private:
 	ALLEGRO_TIMER *timer;
 	IGame *game;
 	std::vector<IMouseEvents *> mouseEvents;
-	IKeyboardEvents *keyboardEvents;
+	std::vector<IKeyboardEvents *> keyboardEvents;
 	ALLEGRO_FONT *font, *monospacedFont;
 	///<summary>Zapamiêtuje wskaŸniki dla danej bitmapy - przy ponownym wczytaniu bitmapy nie bêdzie ona wczytywana ponownie, lecz zwracana z mapy</summary>
 	std::map<std::string, Bitmap*> bitmapsPointiers;
@@ -37,7 +37,9 @@ public:
 	void DrawRectangle(int x1, int y1, int x2, int y2, int r, int g, int b, float thick);
 	void StartGameLoop();
 	void ShowError(std::string message);
-	void AddEvents(IGame *game, IKeyboardEvents *keyboardEvents);
+	void AddEvents(IGame *game);
+	void AddKeyboardEvent(IKeyboardEvents *keyboardEvent);
+	void RemoveKeyboardEvent(IKeyboardEvents *keyboardEvent);
 	void AddMouseEvent(IMouseEvents *mouseEvents);
 	void RemoveMouseEvent(IMouseEvents *mouseEvents);
 	int GetDisplayWidth();

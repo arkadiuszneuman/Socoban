@@ -11,7 +11,7 @@
 #include <map>
 #include <vector>
 
-class Player : public MovableObject
+class Player : public MovableObject, public IKeyboardEvents
 {
 private:
 	Key pressedKey;
@@ -45,8 +45,9 @@ public:
 	void SetWalls(std::vector<Wall*> &walls);
 	void SetEndpoints(std::vector<Floor*> &endPoints);
 	void Update();
-	void KeyPressed(Key key);
-	void KeyReleased(Key key);
+	void KeyDownEvent(Key key);
+	void KeyUpEvent(Key key);
+	void CharEntered(char c);
 	bool IsEnded();
 	int GetSteps();
 	~Player();

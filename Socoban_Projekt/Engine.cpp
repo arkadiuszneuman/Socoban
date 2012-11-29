@@ -92,11 +92,27 @@ void Engine::Initialize(std::string gameName)
 	}
 }
 
-void Engine::AddEvents(IGame *game, IKeyboardEvents *keyboardEvents)
+void Engine::AddEvents(IGame *game)
 {
 	this->game = game;
 	this->mouseEvents = mouseEvents;
-	this->keyboardEvents = keyboardEvents;
+}
+
+void Engine::AddKeyboardEvent(IKeyboardEvents *keyboardEvent)
+{
+	keyboardEvents.push_back(keyboardEvent);
+}
+
+void Engine::RemoveKeyboardEvent(IKeyboardEvents *keyboardEvent)
+{
+	for (int i = 0; i < keyboardEvents.size(); ++i)
+	{
+		if (keyboardEvents[i] == keyboardEvent)
+		{
+			keyboardEvents.erase(keyboardEvents.begin() + i);
+			break;
+		}
+	}
 }
 
 void Engine::AddMouseEvent(IMouseEvents *mouseEvent)
@@ -196,17 +212,26 @@ void Engine::StartGameLoop()
 		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) 
 		{
 			Key key = (Key)ev.keyboard.keycode;
-			keyboardEvents->KeyDownEvent(key);
+			for (int i = 0; i < keyboardEvents.size(); ++i)
+			{
+				keyboardEvents[i]->KeyDownEvent(key);
+			}
 		}
 		else if (ev.type == ALLEGRO_EVENT_KEY_UP) 
 		{
 			Key key = (Key)ev.keyboard.keycode;
-			keyboardEvents->KeyUpEvent(key);
+			for (int i = 0; i < keyboardEvents.size(); ++i)
+			{
+				keyboardEvents[i]->KeyUpEvent(key);
+			}
 		}
 		else if (ev.type == ALLEGRO_EVENT_KEY_CHAR)
 		{
 			char c = (char)ev.keyboard.unichar;
-			keyboardEvents->CharEntered(c);
+			for (int i = 0; i < keyboardEvents.size(); ++i)
+			{
+				keyboardEvents[i]->CharEntered(c);
+			}
 		}
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{

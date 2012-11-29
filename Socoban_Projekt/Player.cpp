@@ -23,6 +23,7 @@ Player::Player(Point &location)
 	this->pressedKey = Key::None;
 	this->framesCount = 0;
 	this->steps = 0;
+	this->engine->AddKeyboardEvent(this);
 }
 
 void Player::LoadBitmaps(std::string bitmapName, Key key)
@@ -233,7 +234,7 @@ bool Player::IsEnded()
 	return this->isEnded;
 }
 
-void Player::KeyPressed(Key key)
+void Player::KeyDownEvent(Key key)
 {
 	if (pressedKey == Key::None)
 	{
@@ -241,12 +242,16 @@ void Player::KeyPressed(Key key)
 	}
 }
 
-void Player::KeyReleased(Key key)
+void Player::KeyUpEvent(Key key)
 {
 	if (pressedKey == key)
 	{
 		pressedKey = Key::None;
 	}
+}
+
+void Player::CharEntered(char c)
+{
 }
 
 int Player::GetSteps()
@@ -256,6 +261,7 @@ int Player::GetSteps()
 
 Player::~Player()
 {
+	this->engine->RemoveKeyboardEvent(this);
 	animMove.clear();
 	animEnd.clear();
 }

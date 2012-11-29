@@ -5,12 +5,10 @@ Menu::Menu()
 {
 	engine = Engine::GetInstance();
 	bitmap = NULL;
-	windowBitmap = NULL;
 	actualMap = "";
 	freeze = false;
 	isInGame = false;
 	playerSteps = 0;
-	this->showCaret = false;
 	this->IsInEditor = false;
 
 	menuBitmap = engine->GetBMP("menu/menubitmap.bmp");
@@ -19,6 +17,8 @@ Menu::Menu()
 
 	highscore = new HighscoreCollection();
 	highscoreDrawer = NULL;
+
+	gameWindow = NULL;
 
 	CreateMainMenu();
 }
@@ -34,7 +34,6 @@ void Menu::CreateMainMenu()
 	buttons.push_back(new Button("end", Point(276, 450), this, true));
 
 	bitmap = menuBitmap;
-	windowBitmap = NULL;
 	mapToLoad = "menu";
 
 	isInGame = false;
@@ -73,7 +72,6 @@ void Menu::CreateMapsMenu()
 	buttons.push_back(new Button("usermap", Point(280, 450), this, true));
 
 	bitmap = menuBitmap;
-	windowBitmap = NULL;
 }
 
 void Menu::CreateGameMenu(std::string levelName)
@@ -86,7 +84,6 @@ void Menu::CreateGameMenu(std::string levelName)
 	actualMap = levelName;
 	mapToLoad = levelName;
 	bitmap = gameBitmap;
-	windowBitmap = NULL;
 
 	isInGame = true;
 	playerSteps = 0;
@@ -101,25 +98,6 @@ void Menu::ClearButtons()
 	}
 
 	buttons.clear();
-}
-
-void Menu::CreateGameWindow(std::string windowName, std::string firstBtnName, std::string secondBtnName)
-{
-	this->windowBitmap = engine->GetBMP("menu/windows/" + windowName + ".bmp");
-
-	Point bitmapLocation((engine->GetDisplayWidth() / 2) - (windowBitmap->GetWidth() / 2),
-			(engine->GetDisplayHeight() / 2) - (windowBitmap->GetHeight() / 2));
-
-	if (firstBtnName.length() > 0)
-	{
-		buttons.push_back(new Button("windows/" + firstBtnName, Point(bitmapLocation.GetX() + 20, 
-			bitmapLocation.GetY() + this->windowBitmap->GetHeight() - 30), this, true));
-	}
-	if (secondBtnName.length() > 0)
-	{
-		buttons.push_back(new Button("windows/" + secondBtnName, Point(bitmapLocation.GetX() + this->windowBitmap->GetWidth() - 80, 
-			bitmapLocation.GetY() + this->windowBitmap->GetHeight() - 30), this, true));
-	}
 }
 
 void Menu::ButtonClicked(std::string name)
@@ -168,19 +146,28 @@ void Menu::ButtonClicked(std::string name)
 	else if (name == "close" || name == "windows/endsmall")
 	{
 		freeze = false;
+
+		if (gameWindow != NULL)
+		{
+			delete gameWindow;
+			gameWindow = NULL;
+		}
+
 		CreateMainMenu();	
 	}
 	else if (name == "windows/next")
 	{
 		int lvlNo = Convert::ToInt(actualMap.substr(actualMap.size() - 1, actualMap.size()).c_str());
 
-		if (showCaret) //jeœli zakoñczono dodawanie nazwy u¿ytkownika
+		if (gameWindow != NULL)
 		{
-			showCaret = false;
-			highscore->AddHighscore(lvlNo, playerName, playingTime, playerSteps);
+			highscore->AddHighscore(lvlNo, gameWindow->GetText(), playingTime, playerSteps);
 
-			playerName = playingTime = "";
+			playingTime = "";
 			playerSteps = 0;
+
+			delete gameWindow;
+			gameWindow = NULL;
 		}
 
 		freeze = false;
@@ -192,6 +179,7 @@ void Menu::ButtonClicked(std::string name)
 	}
 	else if (name == "editor")
 	{
+		ClearButtons();
 		this->IsInEditor = true;
 	}
 }
@@ -206,15 +194,14 @@ void Menu::NextMap()
 	}
 	else
 	{
-		if (!showCaret && highscore->IsQualified(Convert::ToInt(actualMap.substr(actualMap.size() - 1, actualMap.size()).c_str())
+		if (this->gameWindow == NULL && highscore->IsQualified(Convert::ToInt(actualMap.substr(actualMap.size() - 1, actualMap.size()).c_str())
 			, playerSteps, playingTime))
 		{
-			showCaret = true;
-			CreateGameWindow("highscore", "next", "");
+			this->gameWindow = new GameWindow(this, "highscore", "next", "", true);
 		}
 		else
 		{
-			CreateGameWindow("congratulations", "next", "endsmall");
+			this->gameWindow = new GameWindow(this, "congratulations", "next", "endsmall", true);
 		}
 	}
 }
@@ -239,13 +226,6 @@ void Menu::Draw()
 			engine->GetDisplayHeight() - bitmap->GetHeight());
 	}
 
-	if (showCaret)
-	{
-		engine->DrawGameText(playerName, 320, 288, 50, 50, 50, false, true);
-		engine->DrawLine(320 + (playerName.length() * 9), 290, 
-			320 + (playerName.length() * 9), 305, 0, 0, 0, 2);
-	}
-
 	if (highscoreDrawer != NULL)
 	{
 		highscoreDrawer->Draw(highscore);
@@ -259,6 +239,11 @@ void Menu::Draw()
 	for (int i = 0; i < buttons.size(); ++i)
 	{
 		buttons[i]->Draw();
+	}
+
+	if (gameWindow != NULL)
+	{
+		gameWindow->Draw();
 	}
 }
 
@@ -283,7 +268,7 @@ void Menu::DrawGameText()
 
 void Menu::Update(int playerSteps)
 {
-	if (isInGame && !this->showCaret)
+	if (isInGame && this->gameWindow == NULL)
 	{
 		time_t endTime = time(NULL);
 		time_t diff = endTime - startTime;
@@ -294,29 +279,21 @@ void Menu::Update(int playerSteps)
 
 		this->playerSteps = playerSteps;
 	}
-}
 
-void Menu::CharEntered(char c)
-{
-	if (showCaret)
+	if (buttons.size() == 0)
 	{
-		if (playerName.length() < 15)
-		{
-			if (c >= 32 && c <= 126)
-			{
-				playerName += c;
-			}
-		}
-		
-		if (c == 8 && playerName.length() > 0) //backspace
-		{
-			playerName = playerName.substr(0, playerName.length() - 1);
-		}
+		CreateMainMenu();
 	}
 }
 
 Menu::~Menu()
 {
+	if (this->gameWindow != NULL)
+	{
+		delete this->gameWindow;
+		this->gameWindow = NULL;
+	}
+
 	if (this->highscoreDrawer != NULL)
 	{
 		delete this->highscoreDrawer;

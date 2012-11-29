@@ -1,9 +1,9 @@
 #include "Editor.h"
 
-Editor::Editor()
+Editor::Editor(Map *map)
 {
 	engine = Engine::GetInstance();
-	
+
 	r = 255;
 	g = b = 0;
 
@@ -23,7 +23,8 @@ Editor::Editor()
 
 	this->isEnded = false;
 	this->player = NULL;
-	
+	this->gameWindow = NULL;
+
 	ChangeBrush(ObjectType::EEmpty);
 }
 
@@ -35,6 +36,10 @@ void Editor::ChangeBrush(ObjectType objectType)
 
 void Editor::ButtonClicked(std::string name)
 {
+	if (name == "save")
+	{
+		gameWindow = new GameWindow(this, "savemap", "ok", "cancel", true);
+	}
 	if (name == "close")
 	{
 		this->isEnded = true;
@@ -63,6 +68,32 @@ void Editor::ButtonClicked(std::string name)
 	{
 		ChangeBrush(ObjectType::EEmpty);
 	}
+	else if (name == "windows/ok")
+	{
+		if (this->gameWindow != NULL)
+		{
+			if (SaveMap(this->gameWindow->GetText()))
+			{
+				delete this->gameWindow;
+				this->gameWindow = NULL;
+			}
+		}
+	}
+	else if (name == "windows/cancel")
+	{
+		if (this->gameWindow != NULL)
+		{
+			delete this->gameWindow;
+			this->gameWindow = NULL;
+		}
+	}
+}
+
+bool Editor::SaveMap(std::string name)
+{
+	map->SaveMap(name, floors, destinations, boxes, walls, player);
+
+	return false;
 }
 
 bool Editor::IsEnded()
@@ -78,7 +109,7 @@ void Editor::Draw()
 	engine->DrawBitmap(bitmap, engine->GetDisplayWidth() - bitmap->GetWidth(), 
 		engine->GetDisplayHeight() - bitmap->GetHeight());
 
-	
+
 	for(std::map<ObjectType, Button*>::iterator it = buttonsDictionary.begin(); it != buttonsDictionary.end(); ++it)
 	{
 		it->second->Draw();
@@ -97,14 +128,29 @@ void Editor::Draw()
 		floors[i]->Draw();
 	}
 
-	for (int i = 0; i < objects.size(); ++i)
+	for (int i = 0; i < destinations.size(); ++i)
 	{
-		objects[i]->Draw();
+		destinations[i]->Draw();
+	}
+
+	for (int i = 0; i < boxes.size(); ++i)
+	{
+		boxes[i]->Draw();
+	}
+
+	for (int i = 0; i < walls.size(); ++i)
+	{
+		walls[i]->Draw();
 	}
 
 	if (player != NULL)
 	{
 		player->Draw();
+	}
+
+	if (gameWindow != NULL)
+	{
+		gameWindow ->Draw();
 	}
 }
 
@@ -118,55 +164,74 @@ Point Editor::ConvertLogicalToPoint(int x, int y)
 
 void Editor::AddObject(int x, int y, ObjectType objectType)
 {
-	if (objectType == ObjectType::EEmpty)
+	if (gameWindow == NULL)
 	{
-		RemoveObject(x, y);
-	}
-	else
-	{
-		Point point = ConvertLogicalToPoint(x, y);
-
-		for (int x = 0; x < objects.size(); ++x)
+		if (objectType == ObjectType::EEmpty)
 		{
-			if (objects[x]->GetLocation() == point || (player != NULL && player->GetLocation() == point))
-			{
-				return;
-			}
+			RemoveObject(x, y);
 		}
-
-		if (objectType == ObjectType::EFloor || objectType == ObjectType::EDestination)
+		else
 		{
-			for (int x = 0; x < floors.size(); ++x)
+			Point point = ConvertLogicalToPoint(x, y);
+
+			for (int x = 0; x < walls.size(); ++x)
 			{
-				if (floors[x]->GetLocation() == point)
+				if (walls[x]->GetLocation() == point || (player != NULL && player->GetLocation() == point))
 				{
 					return;
 				}
 			}
-		}
 
-		if (objectType == ObjectType::EPlayer)
-		{
-			if (player == NULL)
+			for (int x = 0; x < boxes.size(); ++x)
 			{
-				player = new Player(point);
+				if (boxes[x]->GetLocation() == point || (player != NULL && player->GetLocation() == point))
+				{
+					return;
+				}
 			}
-		}
-		else if (objectType == ObjectType::EBox)
-		{
-			objects.push_back(new Box(point));
-		}
-		else if (objectType == ObjectType::EDestination)
-		{
-			floors.push_back(new Floor(point, true));
-		}
-		else if (objectType == ObjectType::EFloor)
-		{
-			floors.push_back(new Floor(point, false));
-		}
-		else if (objectType == ObjectType::EWall)
-		{
-			objects.push_back(new Wall(point));
+
+			if (objectType == ObjectType::EFloor || objectType == ObjectType::EDestination)
+			{
+				for (int x = 0; x < floors.size(); ++x)
+				{
+					if (floors[x]->GetLocation() == point)
+					{
+						return;
+					}
+				}
+
+				for (int x = 0; x < destinations.size(); ++x)
+				{
+					if (destinations[x]->GetLocation() == point)
+					{
+						return;
+					}
+				}
+			}
+
+			if (objectType == ObjectType::EPlayer)
+			{
+				if (player == NULL)
+				{
+					player = new Player(point);
+				}
+			}
+			else if (objectType == ObjectType::EBox)
+			{
+				boxes.push_back(new Box(point));
+			}
+			else if (objectType == ObjectType::EDestination)
+			{
+				destinations.push_back(new Floor(point, true));
+			}
+			else if (objectType == ObjectType::EFloor)
+			{
+				floors.push_back(new Floor(point, false));
+			}
+			else if (objectType == ObjectType::EWall)
+			{
+				walls.push_back(new Wall(point));
+			}
 		}
 	}
 }
@@ -175,12 +240,22 @@ void Editor::RemoveObject(int x, int y)
 {
 	Point point = ConvertLogicalToPoint(x, y);
 
-	for (int x = 0; x < objects.size(); ++x)
+	for (int x = 0; x < walls.size(); ++x)
 	{
-		if (objects[x]->GetLocation() == point)
+		if (walls[x]->GetLocation() == point)
 		{
-			delete objects[x];
-			objects.erase(objects.begin() + x);
+			delete walls[x];
+			walls.erase(walls.begin() + x);
+			return;
+		}
+	}
+
+	for (int x = 0; x < boxes.size(); ++x)
+	{
+		if (boxes[x]->GetLocation() == point)
+		{
+			delete boxes[x];
+			boxes.erase(boxes.begin() + x);
 			return;
 		}
 	}
@@ -191,6 +266,16 @@ void Editor::RemoveObject(int x, int y)
 		{
 			delete player;
 			player = NULL;
+		}
+	}
+
+	for (int x = 0; x < destinations.size(); ++x)
+	{
+		if (destinations[x]->GetLocation() == point)
+		{
+			delete destinations[x];
+			destinations.erase(destinations.begin() + x);
+			return;
 		}
 	}
 
@@ -228,6 +313,12 @@ void Editor::CharEntered(char c)
 
 Editor::~Editor()
 {
+	if (this->gameWindow != NULL)
+	{
+		delete this->gameWindow;
+		this->gameWindow = NULL;
+	}
+
 	for(std::map<ObjectType, Button*>::iterator it = buttonsDictionary.begin(); it != buttonsDictionary.end(); ++it)
 	{
 		delete it->second;
@@ -240,9 +331,19 @@ Editor::~Editor()
 
 	buttonsDictionary.clear();
 
-	for (int x = 0; x < objects.size(); ++x)
+	for (int i = 0; i < destinations.size(); ++i)
 	{
-		delete objects[x];
+		delete destinations[i];
+	}
+
+	for (int i = 0; i < boxes.size(); ++i)
+	{
+		delete boxes[i];
+	}
+
+	for (int i = 0; i < walls.size(); ++i)
+	{
+		delete walls[i];
 	}
 
 	for (int x = 0; x < floors.size(); ++x)
