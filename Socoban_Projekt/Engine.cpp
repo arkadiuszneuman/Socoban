@@ -113,6 +113,8 @@ void Engine::RemoveKeyboardEvent(IKeyboardEvents *keyboardEvent)
 			break;
 		}
 	}
+
+	keyboardEvents.clear();
 }
 
 void Engine::AddMouseEvent(IMouseEvents *mouseEvent)

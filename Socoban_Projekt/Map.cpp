@@ -109,11 +109,11 @@ std::vector<unsigned short> Map::CreateArray(std::vector<Floor*> floors, std::ve
 
 	for (int i = 0; i < boxes.size(); ++i)
 	{
-		if (map[(int)(boxes[i]->GetLocation().GetX() / 30)][(int)(boxes[i]->GetLocation().GetY() / 30)] = 5)
+		if (map[(int)(boxes[i]->GetLocation().GetX() / 30)][(int)(boxes[i]->GetLocation().GetY() / 30)] == 5)
 		{
 			map[(int)(boxes[i]->GetLocation().GetX() / 30)][(int)(boxes[i]->GetLocation().GetY() / 30)] = 54;
 		}
-		else if (map[(int)(boxes[i]->GetLocation().GetX() / 30)][(int)(boxes[i]->GetLocation().GetY() / 30)] = 6)
+		else if (map[(int)(boxes[i]->GetLocation().GetX() / 30)][(int)(boxes[i]->GetLocation().GetY() / 30)] == 6)
 		{
 			map[(int)(boxes[i]->GetLocation().GetX() / 30)][(int)(boxes[i]->GetLocation().GetY() / 30)] = 64;
 		}
@@ -129,11 +129,11 @@ std::vector<unsigned short> Map::CreateArray(std::vector<Floor*> floors, std::ve
 	}
 
 
-	if (map[(int)(player->GetLocation().GetX() / 30)][(int)(player->GetLocation().GetY() / 30)] = 5)
+	if (map[(int)(player->GetLocation().GetX() / 30)][(int)(player->GetLocation().GetY() / 30)] == 5)
 	{
 		map[(int)(player->GetLocation().GetX() / 30)][(int)(player->GetLocation().GetY() / 30)] = 53;
 	}
-	else if (map[(int)(player->GetLocation().GetX() / 30)][(int)(player->GetLocation().GetY() / 30)] = 6)
+	else if (map[(int)(player->GetLocation().GetX() / 30)][(int)(player->GetLocation().GetY() / 30)] == 6)
 	{
 		map[(int)(player->GetLocation().GetX() / 30)][(int)(player->GetLocation().GetY() / 30)] = 63;
 	}

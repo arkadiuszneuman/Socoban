@@ -40,8 +40,8 @@ public:
 	void AddEvents(IGame *game);
 	void AddKeyboardEvent(IKeyboardEvents *keyboardEvent);
 	void RemoveKeyboardEvent(IKeyboardEvents *keyboardEvent);
-	void AddMouseEvent(IMouseEvents *mouseEvents);
-	void RemoveMouseEvent(IMouseEvents *mouseEvents);
+	void AddMouseEvent(IMouseEvents *mouseEvent);
+	void RemoveMouseEvent(IMouseEvents *mouseEvent);
 	int GetDisplayWidth();
 	int GetDisplayHeight();
 	///<summary>Usuwa wszelkie bitmapy z pamiêci</summary>
