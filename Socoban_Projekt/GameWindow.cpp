@@ -5,6 +5,7 @@ GameWindow::GameWindow(IButtonClickedEvent *btnClickedEvent, std::string windowN
 {
 	this->engine = Engine::GetInstance();
 	this->windowBitmap = engine->GetBMP("menu/windows/" + windowName + ".bmp");
+	this->name = windowName;
 
 	Point bitmapLocation((engine->GetDisplayWidth() / 2) - (windowBitmap->GetWidth() / 2),
 			(engine->GetDisplayHeight() / 2) - (windowBitmap->GetHeight() / 2));
@@ -40,6 +41,11 @@ void GameWindow::Draw()
 		engine->DrawLine(320 + (text.length() * 9), 290, 
 			320 + (text.length() * 9), 305, 0, 0, 0, 2);
 	}
+}
+
+std::string GameWindow::GetName()
+{
+	return this->name;
 }
 
 void GameWindow::KeyDownEvent(Key key)

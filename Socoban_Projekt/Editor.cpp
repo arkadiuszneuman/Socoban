@@ -72,7 +72,18 @@ void Editor::ButtonClicked(std::string name)
 	{
 		if (this->gameWindow != NULL)
 		{
-			if (SaveMap(this->gameWindow->GetText()))
+			if (this->gameWindow->GetName() == "savemap")
+			{
+				std::string filename = this->gameWindow->GetText();
+				delete this->gameWindow;
+				this->gameWindow = NULL;
+
+				if (!SaveMap(filename))
+				{
+					this->gameWindow = new GameWindow(this, "fileexists", "ok", "", false);
+				}
+			}
+			else if (this->gameWindow->GetName() == "fileexists")
 			{
 				delete this->gameWindow;
 				this->gameWindow = NULL;
@@ -91,7 +102,23 @@ void Editor::ButtonClicked(std::string name)
 
 bool Editor::SaveMap(std::string name)
 {
-	map->SaveMap(name, floors, destinations, boxes, walls, player);
+	if (!IsFileExists(("maps/" + name + ".soc").c_str()))
+	{
+		map->SaveMap(name, floors, destinations, boxes, walls, player);
+		return true;
+	}
+
+	return false;
+}
+
+bool Editor::IsFileExists(const char *filename)
+{
+	FILE *fp = fopen(filename,"r");
+	if(fp) 
+	{
+		fclose(fp);
+		return true;
+	} 
 
 	return false;
 }
