@@ -110,11 +110,10 @@ void Engine::RemoveKeyboardEvent(IKeyboardEvents *keyboardEvent)
 		if (keyboardEvents[i] == keyboardEvent)
 		{
 			keyboardEvents.erase(keyboardEvents.begin() + i);
+			--i;
 			break;
 		}
 	}
-
-	keyboardEvents.clear();
 }
 
 void Engine::AddMouseEvent(IMouseEvents *mouseEvent)
@@ -129,6 +128,7 @@ void Engine::RemoveMouseEvent(IMouseEvents *mouseEvent)
 		if (mouseEvents[i] == mouseEvent)
 		{
 			mouseEvents.erase(mouseEvents.begin() + i);
+			--i;
 			break;
 		}
 	}

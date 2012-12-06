@@ -263,15 +263,22 @@ int Map::GetPlayerSteps()
 
 void Map::Dispose()
 {
-	for (int i = 0; i < objects.size(); ++i)
+	if (objects.size() > 0)
 	{
-		delete objects[i];
+		for (int i = 0; i < objects.size() - 1; ++i)
+		{
+			delete objects[i];
+		}
+
+		objects.clear();
+		movableObjects.clear();
 	}
 
-	objects.clear();
-	movableObjects.clear();
-
-	player = NULL;
+	if (player != NULL)
+	{
+		delete player;
+		player = NULL;
+	}
 }
 
 Map::~Map()

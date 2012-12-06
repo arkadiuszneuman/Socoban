@@ -38,7 +38,14 @@ void Editor::ButtonClicked(std::string name)
 {
 	if (name == "save")
 	{
-		gameWindow = new GameWindow(this, "savemap", "ok", "cancel", true);
+		if (player == NULL)
+		{
+			this->gameWindow = new GameWindow(this, "needplayer", "ok", "", false);
+		}
+		else
+		{
+			this->gameWindow = new GameWindow(this, "savemap", "ok", "cancel", true);
+		}
 	}
 	if (name == "close")
 	{
@@ -83,7 +90,7 @@ void Editor::ButtonClicked(std::string name)
 					this->gameWindow = new GameWindow(this, "fileexists", "ok", "", false);
 				}
 			}
-			else if (this->gameWindow->GetName() == "fileexists")
+			else
 			{
 				delete this->gameWindow;
 				this->gameWindow = NULL;
