@@ -173,6 +173,23 @@ void Menu::ButtonClicked(std::string name)
 		freeze = false;
 		CreateGameMenu("lvl" + Convert::ToString(lvlNo + 1));	
 	}
+	else if (name == "windows/ok")
+	{
+
+	}
+	else if (name == "windows/cancel")
+	{
+		if (gameWindow != NULL)
+		{
+			delete gameWindow;
+			gameWindow = NULL;
+
+			for (int i = 0; i < buttons.size(); ++i)
+			{
+				buttons[i]->SetIsClickable(true);
+			}
+		}
+	}
 	else if (name == "end")
 	{
 		engine->endGameLoop = true;
@@ -181,6 +198,14 @@ void Menu::ButtonClicked(std::string name)
 	{
 		ClearButtons();
 		this->IsInEditor = true;
+	}
+	else if (name == "usermap")
+	{
+		for (int i = 0; i < buttons.size(); ++i)
+		{
+			buttons[i]->SetIsClickable(false);
+		}
+		this->gameWindow = new GameWindow(this, "openmap", "ok", "cancel", true);
 	}
 }
 

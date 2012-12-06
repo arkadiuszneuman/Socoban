@@ -30,14 +30,22 @@ Button::Button(std::string name, Point &location, IButtonClickedEvent *buttonCli
 	Engine::GetInstance()->AddMouseEvent(this);
 }
 
+void Button::SetIsClickable(bool isClickable)
+{
+	this->isClickable = isClickable;
+}
+
 bool Button::IsMouseOver(Mouse mouse)
 {
-	Point size(bitmap->GetWidth(), bitmap->GetHeight());
-	Point mouseLocation(mouse.x, mouse.y);
-
-	if (mouseLocation >= this->location && mouseLocation <= this->location + size)
+	if (isClickable)
 	{
-		return true;
+		Point size(bitmap->GetWidth(), bitmap->GetHeight());
+		Point mouseLocation(mouse.x, mouse.y);
+
+		if (mouseLocation >= this->location && mouseLocation <= this->location + size)
+		{
+			return true;
+		}
 	}
 
 	return false;
@@ -45,46 +53,55 @@ bool Button::IsMouseOver(Mouse mouse)
 
 void Button::MouseMove(Mouse mouse)
 {
-	if (!isMouseDown)
+	if (isClickable)
 	{
-		if (IsMouseOver(mouse))
+		if (!isMouseDown)
 		{
-			bitmap = bitmaps[1];
-		}
-		else
-		{
-			bitmap = bitmaps[0];
+			if (IsMouseOver(mouse))
+			{
+				bitmap = bitmaps[1];
+			}
+			else
+			{
+				bitmap = bitmaps[0];
+			}
 		}
 	}
 }
 
 void Button::MouseButtonDown(Mouse mouse)
 {
-	if (IsMouseOver(mouse))
+	if (isClickable)
 	{
-		bitmap = bitmaps[2];
-		isMouseDown = true;
-	}
-	else
-	{
-		bitmap = bitmaps[0];
+		if (IsMouseOver(mouse))
+		{
+			bitmap = bitmaps[2];
+			isMouseDown = true;
+		}
+		else
+		{
+			bitmap = bitmaps[0];
+		}
 	}
 }
 
 void Button::MouseButtonUp(Mouse mouse)
 {
-	if (isMouseDown)
+	if (isClickable)
 	{
-		isMouseDown = false;
+		if (isMouseDown)
+		{
+			isMouseDown = false;
 
-		if (IsMouseOver(mouse))
-		{
-			bitmap = bitmaps[1];
-			buttonClickedEvent->ButtonClicked(name);
-		}
-		else
-		{
-			bitmap = bitmaps[0];
+			if (IsMouseOver(mouse))
+			{
+				bitmap = bitmaps[1];
+				buttonClickedEvent->ButtonClicked(name);
+			}
+			else
+			{
+				bitmap = bitmaps[0];
+			}
 		}
 	}
 }
