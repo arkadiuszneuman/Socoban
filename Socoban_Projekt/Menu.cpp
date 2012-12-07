@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include "Convert.h"
+#include "Editor.h"
 
 Menu::Menu()
 {
@@ -158,10 +159,17 @@ void Menu::ButtonClicked(std::string name)
 	else if (name == "windows/next")
 	{
 		int lvlNo = Convert::ToInt(actualMap.substr(actualMap.size() - 1, actualMap.size()).c_str());
+		if (actualMap == "lvl10")
+		{
+			lvlNo = 10;
+		}
 
 		if (gameWindow != NULL)
 		{
-			highscore->AddHighscore(lvlNo, gameWindow->GetText(), playingTime, playerSteps);
+			if (gameWindow->GetName() == "highscore")
+			{
+				highscore->AddHighscore(lvlNo, gameWindow->GetText(), playingTime, playerSteps);
+			}
 
 			playingTime = "";
 			playerSteps = 0;
@@ -170,12 +178,46 @@ void Menu::ButtonClicked(std::string name)
 			gameWindow = NULL;
 		}
 
-		freeze = false;
-		CreateGameMenu("lvl" + Convert::ToString(lvlNo + 1));	
+		if (lvlNo == 10)
+		{
+			gameWindow = new GameWindow(this, "gameend", "endsmall", "", false);
+		}
+		else
+		{
+			freeze = false;
+			CreateGameMenu("lvl" + Convert::ToString(lvlNo + 1));
+		}
 	}
 	else if (name == "windows/ok")
 	{
+		if (gameWindow != NULL)
+		{
+			if (this->gameWindow->GetName() == "openmap")
+			{
+				std::string windowText = this->gameWindow->GetText();
+				delete gameWindow;
+				gameWindow = NULL;
 
+				if (!Editor::IsFileExists(("maps/" + windowText + ".soc").c_str()))
+				{
+					gameWindow = new GameWindow(this, "filedoesntexists", "ok", "", false);
+				}
+				else
+				{
+					CreateGameMenu(windowText);
+				}
+			}
+			else if (this->gameWindow->GetName() == "filedoesntexists")
+			{
+				delete this->gameWindow;
+				this->gameWindow = NULL;
+
+				for (int i = 0; i < buttons.size(); ++i)
+				{
+					buttons[i]->SetIsClickable(true);
+				}
+			}
+		}
 	}
 	else if (name == "windows/cancel")
 	{
@@ -213,21 +255,38 @@ void Menu::NextMap()
 {
 	this->freeze = true;
 
-	if (actualMap == "lvl10")
-	{
+	bool isNotUserMap = true;
 
+	if (actualMap.substr(0, 3) == "lvl" && (actualMap.size() == 4 || actualMap.size() == 5))
+	{
+		for (int i = 0; i < 9; ++i)
+		{
+			if (actualMap[3] == '1' + i)
+			{
+				isNotUserMap = false;
+				break;
+			}
+		}
+
+		if (actualMap == "lvl10")
+		{
+			isNotUserMap = false;
+		}
+	}
+
+	if (this->gameWindow == NULL && !isNotUserMap && highscore->IsQualified(Convert::ToInt(actualMap.substr(actualMap.size() - 1, actualMap.size()).c_str())
+		, playerSteps, playingTime))
+	{
+		this->gameWindow = new GameWindow(this, "highscore", "next", "", true);
 	}
 	else
 	{
-		if (this->gameWindow == NULL && highscore->IsQualified(Convert::ToInt(actualMap.substr(actualMap.size() - 1, actualMap.size()).c_str())
-			, playerSteps, playingTime))
-		{
-			this->gameWindow = new GameWindow(this, "highscore", "next", "", true);
-		}
-		else
-		{
-			this->gameWindow = new GameWindow(this, "congratulations", "next", "endsmall", true);
-		}
+		this->gameWindow = new GameWindow(this, "congratulations", "next", "endsmall", false);
+	}
+
+	for (int i = 0; i < buttons.size(); ++i)
+	{
+		buttons[i]->SetIsClickable(false);
 	}
 }
 

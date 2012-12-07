@@ -22,7 +22,6 @@ private:
 	void AddObject(int x, int y, ObjectType objectType);
 	void RemoveObject(int x, int y);
 	bool SaveMap(std::string name);
-	bool IsFileExists(const char *filename);
 
 	Engine *engine;
 	GameWindow *gameWindow;
@@ -44,6 +43,7 @@ public:
 	~Editor();
 
 	bool IsEnded();
+	static bool IsFileExists(const char *filename);
 
 	void Draw();
 
