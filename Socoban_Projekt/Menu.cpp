@@ -274,8 +274,13 @@ void Menu::NextMap()
 		}
 	}
 
-	if (this->gameWindow == NULL && !isNotUserMap && highscore->IsQualified(Convert::ToInt(actualMap.substr(actualMap.size() - 1, actualMap.size()).c_str())
-		, playerSteps, playingTime))
+	int mapNo = Convert::ToInt(actualMap.substr(actualMap.size() - 1, actualMap.size()));
+	if (actualMap == "lvl10")
+	{
+		mapNo = 10;
+	}
+
+	if (this->gameWindow == NULL && !isNotUserMap && highscore->IsQualified(mapNo, playerSteps, playingTime))
 	{
 		this->gameWindow = new GameWindow(this, "highscore", "next", "", true);
 	}

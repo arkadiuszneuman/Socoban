@@ -39,6 +39,7 @@ void HighscoreCollection::LoadHighscore()
 
 bool HighscoreCollection::IsQualified(int mapNo, int steps, std::string time)
 {
+	--mapNo;
 	if (highscores[mapNo][9].Steps > steps)
 	{
 		return true;
@@ -98,9 +99,9 @@ bool HighscoreCollection::IsFaster(const string &time1, const string &time2)
 	time1h = Convert::ToInt(splited1[0]);
 	time1m = Convert::ToInt(splited1[1]);
 	time1s = Convert::ToInt(splited1[2]);
-	time2h = Convert::ToInt(splited1[0]);
-	time2m = Convert::ToInt(splited1[1]);
-	time2s = Convert::ToInt(splited1[2]);
+	time2h = Convert::ToInt(splited2[0]);
+	time2m = Convert::ToInt(splited2[1]);
+	time2s = Convert::ToInt(splited2[2]);
 
 	if (time1h < time2h)
 	{
